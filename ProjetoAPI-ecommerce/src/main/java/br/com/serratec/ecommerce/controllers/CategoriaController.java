@@ -39,18 +39,18 @@ public class CategoriaController {
 		return ResponseEntity.ok(optCategoria.get()); // 200
 	}
 	
-	@PostMapping 
+	@PostMapping("/cadastrar") 
 	public ResponseEntity<Categoria> cadastrar_categoria(@RequestBody Categoria categoria) {
 		categoria = categoriaservice.cadastrar_categoria(categoria);
 		return new ResponseEntity<>(categoria, HttpStatus.CREATED); // 201
 	}
 	
-	@PutMapping("/{id_categoria}")
+	@PutMapping("/atualizar/{id_categoria}")
 	public ResponseEntity<Categoria> atualizar_categoria(@PathVariable Integer id_categoria, @RequestBody Categoria categoria) {
 		return ResponseEntity.ok(categoriaservice.atualizar_categoria(id_categoria, categoria)); // 200
 	}
 	
-	@DeleteMapping("/{id_categoria}")
+	@DeleteMapping("/deletar/{id_categoria}")
 	public ResponseEntity<?> deletar_categoria(@PathVariable Integer id_categoria) {
 		categoriaservice.deletar_categoria(id_categoria);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
