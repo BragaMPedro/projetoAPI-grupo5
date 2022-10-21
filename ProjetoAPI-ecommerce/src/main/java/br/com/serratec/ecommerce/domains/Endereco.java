@@ -24,7 +24,7 @@ public class Endereco {
     private String cep;
     
     @Column(length = 50, nullable = false)
-    @NotNull(message = "Campo Rua deve ser preenchido")
+    @NotNull(message = "Campo rua deve ser preenchido")
     private String rua;
 
     @Column(length = 40, nullable = false)
@@ -36,7 +36,6 @@ public class Endereco {
 
     @Column(length = 6, nullable = false)
     @NotNull(message = "Campo Numero deve ser preenchido")
-    @Pattern(regexp = "[0-9]$", message = "Campo espera 2 caracteres numéricos")
     private Integer numero;
     
     @Column(length = 50)

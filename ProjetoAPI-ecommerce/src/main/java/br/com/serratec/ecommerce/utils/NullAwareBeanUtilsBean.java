@@ -3,7 +3,9 @@ package br.com.serratec.ecommerce.utils;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NullAwareBeanUtilsBean extends BeanUtilsBean{
     
     @Override
