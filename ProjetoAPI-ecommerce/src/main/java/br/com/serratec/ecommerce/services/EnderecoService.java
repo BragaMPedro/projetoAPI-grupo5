@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Endereco;
-import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
+import br.com.serratec.ecommerce.domains.ViaCep;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
+import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.repositories.EnderecoRepository;
 import br.com.serratec.ecommerce.utils.NullAwareBeanUtilsBean;
 
@@ -23,7 +23,7 @@ public class EnderecoService {
     private EnderecoRepository enderecoRepository;
 
     @Autowired
-    private NullAwareBeanUtilsBean beanUtilsBean;
+	private NullAwareBeanUtilsBean beanUtilsBean;
 
     private ModelMapper mapper = new ModelMapper();
 
@@ -40,7 +40,7 @@ public class EnderecoService {
         var optEndereco = enderecoRepository.findById(id);
 
 		if(optEndereco.isEmpty()){
-			throw new ResourceNotFoundException("Não foi possível encontrar Endereço id " + id);
+	//		throw new ResourceNotFoundException("Não foi possível encontrar Endereço id " + id);
 		}
 
 		EnderecoResponseDTO dto = mapper.map(optEndereco.get(), EnderecoResponseDTO.class);
@@ -48,13 +48,21 @@ public class EnderecoService {
 		return Optional.of(dto);
     }
 
-    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco) {
+    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco, ViaCep viaCep) throws IllegalAccessException, InvocationTargetException {
+        
+        //converte DTO para Entidade
         var enderecoModel = mapper.map(endereco, Endereco.class);
 
-		enderecoModel.setId(null);
-		enderecoRepository.save(enderecoModel);
-		var response = mapper.map(enderecoModel, EnderecoResponseDTO.class);
+        //método em si (jeito longo)
+        enderecoModel.setRua(viaCep.getLogradouro());
+        enderecoModel.setBairro(viaCep.getBairro());
+        enderecoModel.setCidade(viaCep.getLocalidade());
+        enderecoModel.setUf(viaCep.getUf());
 
+		enderecoRepository.save(enderecoModel);
+        
+        //converte Entidade para DTO
+        var response = mapper.map(enderecoModel, EnderecoResponseDTO.class);
         return response;
     }
 
@@ -85,7 +93,7 @@ public class EnderecoService {
        
         //Objeto do banco de dados
         var enderecoDB = obterById(id);
-        
+
          //Conversão do DTOrequest para Entidade
 		var enderecoModel = mapper.map(endereco, Endereco.class);
 		var enderecoDBmodel = mapper.map(enderecoDB.get(), Endereco.class);
