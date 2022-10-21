@@ -23,7 +23,7 @@ public class Cliente {
 	
 	@Email
 	@NotBlank (message = "Preencha o e-mail:")
-	@Column(name = "email", length = 50)
+	@Column(name = "email", length = 50, unique = true)
 	private String email;
 	
 	@NotBlank (message = "Preencha o nome completo:")
@@ -32,7 +32,7 @@ public class Cliente {
 	
 	@CPF
 	@NotBlank (message = "Preencha o CPF:")
-	@Column(name = "cpf", length = 11)
+	@Column(name = "cpf", length = 11, unique = true)
 	private String cpf;
 	
 	@Column(name = "telefone", length = 11)
