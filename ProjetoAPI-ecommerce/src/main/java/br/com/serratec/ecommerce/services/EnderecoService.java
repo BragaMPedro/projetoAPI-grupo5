@@ -48,16 +48,13 @@ public class EnderecoService {
 		return Optional.of(dto);
     }
 
-    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco, ViaCep viaCep) throws IllegalAccessException, InvocationTargetException {
+    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco, ViaCep viaCep) {
         
         //converte DTO para Entidade
         var enderecoModel = mapper.map(endereco, Endereco.class);
 
         //método em si (jeito longo)
-        enderecoModel.setRua(viaCep.getLogradouro());
-        enderecoModel.setBairro(viaCep.getBairro());
-        enderecoModel.setCidade(viaCep.getLocalidade());
-        enderecoModel.setUf(viaCep.getUf());
+        enderecoModel.viaCepEnderecoUniter(viaCep);
 
 		enderecoRepository.save(enderecoModel);
         
@@ -66,7 +63,7 @@ public class EnderecoService {
         return response;
     }
 
-    public EnderecoResponseDTO atualizar(Long id, EnderecoRequestDTO endereco) {
+    public EnderecoResponseDTO atualizar(Long id, EnderecoRequestDTO endereco, ViaCep viaCep) {
         
         //validação rápida
         obterById(id);
@@ -76,6 +73,7 @@ public class EnderecoService {
        
         //realiza o método em si
 		enderecoModel.setId(id);
+        enderecoModel.viaCepEnderecoUniter(viaCep);
 		enderecoRepository.save(enderecoModel);
       
         //converte Entidade em DTO e retorna

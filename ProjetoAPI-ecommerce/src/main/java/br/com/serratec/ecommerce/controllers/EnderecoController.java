@@ -44,11 +44,19 @@ public class EnderecoController{
         return ResponseEntity.ok(enderecoDTO.get());
     }
 
+    @GetMapping("/viacep")
+    public ViaCep getEnderecoByCep(@RequestBody String cep){
+
+        RestTemplate restTemplate = new RestTemplate();
+		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);
+
+        return viaCep;
+    }
+
     @PostMapping
     public ResponseEntity<EnderecoResponseDTO> post(@Valid @RequestBody EnderecoRequestDTO endereco) throws IllegalAccessException, InvocationTargetException {
 
-        RestTemplate restTemplate = new RestTemplate();
-		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ endereco.getCep() +"/json/", ViaCep.class);
+       ViaCep viaCep = getEnderecoByCep(endereco.getCep());
 
         var contaDTO = enderecoService.cadastrar(endereco, viaCep);
 		return new ResponseEntity<>(contaDTO, HttpStatus.CREATED);
@@ -56,13 +64,15 @@ public class EnderecoController{
 
     @PutMapping("/{id}")
     public ResponseEntity<EnderecoResponseDTO> put(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco) {
-        
-        var enderecoDTO = enderecoService.atualizar(id, endereco);
+
+        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
+
+        var enderecoDTO = enderecoService.atualizar(id, endereco, viaCep);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
        
         enderecoService.deletar(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -45,6 +45,22 @@ public class Endereco {
     @Pattern(regexp = "[a-zA-Z]{2}$", message = "Campo espera 2 caracteres alfabéticos")
     private String uf;
 
+
+    public void viaCepEnderecoUniter(ViaCep viaCep){
+    
+        if(this.rua == null){
+            this.rua = viaCep.getLogradouro(); }
+            
+        if(this.bairro == null){
+            this.bairro = viaCep.getBairro(); }
+            
+        if(this.cidade == null){
+            this.cidade = viaCep.getLocalidade(); }
+
+        if(this.uf == null){
+            this.uf = viaCep.getUf(); }
+      }
+
     public Long getId() {
         return id;
     }
