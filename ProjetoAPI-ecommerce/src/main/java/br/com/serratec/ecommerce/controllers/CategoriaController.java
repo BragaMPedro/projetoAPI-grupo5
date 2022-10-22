@@ -3,6 +3,8 @@ package br.com.serratec.ecommerce.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratec.ecommerce.domains.Categoria;
 import br.com.serratec.ecommerce.services.CategoriaService;
+import br.com.serratec.ecommerce.utils.Helper;
+import io.swagger.annotations.ApiResponse;
 
 @RestController 
 @RequestMapping("/api/categorias") 
@@ -25,34 +29,44 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaservice;
 	
-	@GetMapping
+	@GetMapping("/")
 	public ResponseEntity<List<Categoria>> obterTodos(){
 		
-		List<Categoria> lista = categoriaservice.obterTodos();
-		return ResponseEntity.ok(lista); // 200
+		List<Categoria> body = categoriaservice.obterTodos();
+		return new ResponseEntity<List<Categoria>>(body, HttpStatus.OK); 
 	}
 	
 	@GetMapping("/{id_categoria}")
 	public ResponseEntity<Categoria> obterPorid_categoria(@PathVariable Integer id_categoria){
 		
 		Optional<Categoria> optCategoria = categoriaservice.obterPorid_categoria(id_categoria);
-		return ResponseEntity.ok(optCategoria.get()); // 200
+		return ResponseEntity.ok(optCategoria.get()); 
 	}
 	
 	@PostMapping("/cadastrar") 
-	public ResponseEntity<Categoria> cadastrar_categoria(@RequestBody Categoria categoria) {
-		categoria = categoriaservice.cadastrar_categoria(categoria);
-		return new ResponseEntity<>(categoria, HttpStatus.CREATED); // 201
+	public ResponseEntity<ApiResponse> cadastrar_categoria(@Valid @RequestBody Categoria categoria) {
+		if (Helper.notNull(categoriaservice.leia_categoria(categoria.getNome_categoria()))) {
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "A categoria ja existe"), HttpStatus.CONFLICT );
+		//Para a ApiResponse funcionar é preciso criar um pacote common com uma classe ApiResponse.
+		}
+		categoriaservice.cadastrar_categoria(categoria);
+			return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Categoria criada!"), HttpStatus.CREATED);
+			 
 	}
 	
 	@PutMapping("/atualizar/{id_categoria}")
-	public ResponseEntity<Categoria> atualizar_categoria(@PathVariable Integer id_categoria, @RequestBody Categoria categoria) {
-		return ResponseEntity.ok(categoriaservice.atualizar_categoria(id_categoria, categoria)); // 200
+	public ResponseEntity<ApiResponse> atualizar_categoria(@PathVariable ("id_categoria") Integer id_categoria, @Valid @RequestBody Categoria categoria) {
+		if (Helper.notNull(categoriaservice.leia_categoria(id_categoria))) {
+			categoriaservice.atualizar_categoria(id_categoria, categoria);
+			return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Categoria atualizada!"), HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<ApiResponse>(new ApiResponse(false, "A categoria não existe"), HttpStatus.NOT_FOUND);
 	}
 	
 	@DeleteMapping("/deletar/{id_categoria}")
 	public ResponseEntity<?> deletar_categoria(@PathVariable Integer id_categoria) {
 		categoriaservice.deletar_categoria(id_categoria);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 	}
 }

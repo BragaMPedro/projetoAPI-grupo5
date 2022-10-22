@@ -1,6 +1,5 @@
 package br.com.serratec.ecommerce.services;
 
-import java.security.PrivateKey;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +21,10 @@ public class CategoriaService {
 
 	public List<Categoria> obterTodos() {
 		return categoriarepository.findAll();
+	}
+	
+	public Categoria leia_categoria(String nome_categoria) {
+		return categoriarepository.findByNome_categoria(nome_categoria);
 	}
 	
 	public Optional<Categoria> obterPorid_categoria(Integer id_categoria){
