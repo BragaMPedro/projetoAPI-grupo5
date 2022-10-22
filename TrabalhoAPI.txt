@@ -1,0 +1,20 @@
+Requisitos:
+1- Dendencia Flyway - scripts.sql
+2- CRUD fazendo oq precisa
+3- CRUD para cada recurso (oq significa Controllers, Service e Repositorio)
+4, 5- DTO
+6 - Exceptions (ControllerExceptionHandler)
+7- @Valid
+8- Imagem produto (@OneToOne Nicolas)
+9- Enviar....email...?
+
+Regras de Negócio:
+1- Validação @Present na dataCadastro
+2- POO no Service
+3- (GETViaCep) + POST
+4, 5, 6- @Column(unique= true)
+
+Entrgar:
+1- Script Inserção e Manipulação de dados wtf
+2- Trabalho no gitHub
+3- Swagger
