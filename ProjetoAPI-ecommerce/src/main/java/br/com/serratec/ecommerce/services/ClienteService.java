@@ -23,7 +23,7 @@ public class ClienteService {
         Optional<Cliente> optCliente = repositorio.findById(id_cliente);
         
         if(optCliente.isEmpty()) {
-            throw new ResourceNotFoundException("Não foi possivel encontrar o Cliente " + id_cliente);
+         throw new ResourceNotFoundException("Não foi possivel encontrar o Cliente " + id_cliente);
         }
         
         return optCliente;
@@ -31,7 +31,6 @@ public class ClienteService {
     
     public Cliente cadastrar(Cliente cliente) {
                  
-        cliente.setCpf(null);
         return repositorio.save(cliente);
     }
     
