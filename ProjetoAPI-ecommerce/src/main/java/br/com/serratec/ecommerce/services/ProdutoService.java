@@ -49,7 +49,4 @@ public class ProdutoService {
 		obterPorId(id);
 		repositorio.deleteById(id);
 	}
-	
-//	
-
 }
