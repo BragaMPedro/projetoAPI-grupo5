@@ -1,0 +1,49 @@
+PROJETIN ROADMAP - API
+
+Etapa 1 --------------------- 19/10
+
+Repositório Git OK
+
+Starter.IO OK
+
+Dependencias OK
+
+Base Estrutural Pacotes OK
+
+
+Etapa 2 ---------------------- 20/10
+
+Matheus > Pedido (Repository, Service*, Controller, DTO, @Valid)
+
+Pedro > Endereco OK
+
+Gisele > Cliente (Repository, Service, Controller, DTO, @Valid)
+
+Isis > Produto (@OneToOne ProdutoImg) - (Repository, Service, Controller, DTO, @Valid)
+
+Marcelle > Categoria (Repository, Service, Controller, DTO, @Valid)
+
+
+Etapa 3 ------------------------
+
+Relacionamentos (@OneToMany, @ManyToOne)
+
+ItensPedido (Repository, Service, Controller, @Valid)
+
+Exceptions - (Classe Error, @ControllerAdvice)
+
+MailSender - (Dependencia, Configs e Properties)
+
+
+Etapa 4 ------------------------
+
+Swagger
+
+Testes Insomnia/Postman
+
+
+Etapa 5 ----------------------- 25/10
+
+Apresentação
+
+McDonalds
