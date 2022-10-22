@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -20,7 +21,6 @@ public class Endereco {
 
     @Column(length = 8, nullable = false)
     @NotNull(message = "Campo CEP deve ser preenchido")
-    @Pattern(regexp = "[0-9]{8}$", message = "CEP em formato inválido")
     private String cep;
     
     @Column(length = 50, nullable = false)
@@ -35,6 +35,7 @@ public class Endereco {
     private String cidade;
 
     @Column(length = 6, nullable = false)
+    @DecimalMax(value = "1000000", message = "Opa, chegou na Entidade endereço o seu erro")
     @NotNull(message = "Campo Numero deve ser preenchido")
     private Integer numero;
     
