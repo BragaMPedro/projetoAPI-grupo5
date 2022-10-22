@@ -5,20 +5,17 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.webtutsplus.ecommerce.model.Category;
-
 import br.com.serratec.ecommerce.domains.Categoria;
+import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.CategoriaRepository;
-import br.com.serratec.gestaoserratec.exception.ResourceNotFoundException;
 
 @Service
 @Transactional
 public class CategoriaService {
 
-	private CategoriaRepository categoriarepository ;
+	private final CategoriaRepository categoriarepository ;
 
 	public CategoriaService(CategoriaRepository categoriarepository) {
 		this.categoriarepository = categoriarepository;
@@ -63,12 +60,5 @@ public class CategoriaService {
 	public void deletar_categoria(Integer id_categoria) {
 		obterPorId(id_categoria);
 		categoriarepository.deleteById(id_categoria);
-	}
-
-	private void validarModelo(Categoria categoria) {
-		
-		if(categoria.getDescricao() == null) {
-			throw new ResourceBadRequestException("A categoria deve ter uma descrição!");
-		}
 	}
 }
