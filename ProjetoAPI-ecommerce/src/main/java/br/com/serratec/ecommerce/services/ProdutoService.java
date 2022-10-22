@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Produto;
+import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ProdutoRepository;
 
 @Service
