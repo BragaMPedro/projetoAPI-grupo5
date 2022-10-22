@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -26,6 +27,7 @@ public class Produto {
 		@Column(name="descricao", nullable=false, length=70)
 		private String descricao;
 		
+		@DecimalMin(value= "1")
 		@Column(name="qtd_estoque")
 		private int qtd_estoque;
 		
@@ -33,6 +35,7 @@ public class Produto {
 	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	    private LocalDate data_cadastro;
 		
+		@DecimalMin(value="10")
 		@NotBlank(message = "Preencha o valor!")
 		@Column(name="valor_unitario", nullable=false)
 		private Double valor_unitario;
