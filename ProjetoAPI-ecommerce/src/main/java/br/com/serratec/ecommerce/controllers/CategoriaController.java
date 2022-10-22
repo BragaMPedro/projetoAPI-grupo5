@@ -1,6 +1,7 @@
 package br.com.serratec.ecommerce.controllers;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -17,29 +18,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.serratec.ecommerce.common.ApiResponse;
 import br.com.serratec.ecommerce.domains.Categoria;
 import br.com.serratec.ecommerce.services.CategoriaService;
 import br.com.serratec.ecommerce.utils.Helper;
-import io.swagger.annotations.ApiResponse;
+
 
 @RestController 
-@RequestMapping("/api/categorias") 
+@RequestMapping("/categorias") 
 public class CategoriaController {
 
 	@Autowired
 	private CategoriaService categoriaservice;
 	
 	@GetMapping("/")
-	public ResponseEntity<List<Categoria>> obterTodos(){
-		
-		List<Categoria> body = categoriaservice.obterTodos();
+	public ResponseEntity<List<Categoria>> getCategoria(){
+		List<Categoria> body = categoriaservice.listar_categorias();
 		return new ResponseEntity<List<Categoria>>(body, HttpStatus.OK); 
 	}
 	
-	@GetMapping("/{id_categoria}")
-	public ResponseEntity<Categoria> obterPorid_categoria(@PathVariable Integer id_categoria){
+	@GetMapping("/{id}")
+	public ResponseEntity<Categoria> obterPorid_categoria(@PathVariable Integer id){
 		
-		Optional<Categoria> optCategoria = categoriaservice.obterPorid_categoria(id_categoria);
+		Optional<Categoria> optCategoria = categoriaservice.obterPorId(id);
 		return ResponseEntity.ok(optCategoria.get()); 
 	}
 	
@@ -47,9 +48,9 @@ public class CategoriaController {
 	public ResponseEntity<ApiResponse> cadastrar_categoria(@Valid @RequestBody Categoria categoria) {
 		if (Helper.notNull(categoriaservice.leia_categoria(categoria.getNome_categoria()))) {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "A categoria ja existe"), HttpStatus.CONFLICT );
-		//Para a ApiResponse funcionar é preciso criar um pacote common com uma classe ApiResponse.
+		
 		}
-		categoriaservice.cadastrar_categoria(categoria);
+		categoriaservice.criar_categoria(categoria);
 			return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Categoria criada!"), HttpStatus.CREATED);
 			 
 	}
