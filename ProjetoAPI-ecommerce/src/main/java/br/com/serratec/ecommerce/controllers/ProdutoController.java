@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratec.ecommerce.domains.Produto;
+import br.com.serratec.ecommerce.dto.ProdutoRequestDTO;
+import br.com.serratec.ecommerce.dto.ProdutoResponseDTO;
 import br.com.serratec.ecommerce.services.ProdutoService;
 
 
@@ -28,28 +30,32 @@ public class ProdutoController {
 	private ProdutoService servico;
 	
 	@GetMapping
-	public ResponseEntity<List<Produto>> obterTodos(){
+	public ResponseEntity<List<ProdutoResponseDTO>> obterTodos(){
 		
-		List<Produto> lista = servico.obterTodos();
+		List<ProdutoResponseDTO> lista = servico.obterTodos();
 		return ResponseEntity.ok(lista);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Produto> obterPorId(@PathVariable Long id_produto){
+	public ResponseEntity<ProdutoResponseDTO> obterPorId(@PathVariable Long id_produto){
 		
-		Optional<Produto> optProduto = servico.obterPorId(id_produto);
+		var optProduto = servico.obterPorId(id_produto);
 		return ResponseEntity.ok(optProduto.get());
 	}
 	
 	@PostMapping 
-	public ResponseEntity<Produto> cadastrar(@Valid @RequestBody Produto produto) {
-		produto = servico.cadastrar(produto);
-		return new ResponseEntity<>(produto, HttpStatus.CREATED);
+	public ResponseEntity<ProdutoResponseDTO> cadastrar(@Valid @RequestBody ProdutoRequestDTO produto) {
+		
+		
+		var produtoDTO = servico.cadastrar(produto);
+		return new ResponseEntity<>(produtoDTO, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Produto> atualizar(@Valid @PathVariable Long id_produto, @RequestBody Produto produto) {
-		return ResponseEntity.ok(servico.atualizar(id_produto, produto));
+	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id_produto,@Valid @RequestBody ProdutoRequestDTO produto) {
+		
+		var produtoDTO = servico.atualizar(id_produto, produto);
+		return new ResponseEntity<>(produtoDTO, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
