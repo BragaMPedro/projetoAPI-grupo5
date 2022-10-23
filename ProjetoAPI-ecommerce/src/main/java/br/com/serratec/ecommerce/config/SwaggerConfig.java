@@ -18,7 +18,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.serratec.ecommerce"))
+				.apis(RequestHandlerSelectors.basePackage("br.com.serratec.ecommerce"))
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(apiInfo());
@@ -31,7 +31,7 @@ public class SwaggerConfig {
 		.license("Apache License Version 2.0")
 		.licenseUrl("https://www.apache.org/license/LICENSE-2.0")
 		.version("1.0.0")
-		.contact(new Contact("EcommerceManeirão","www.ecommerce.serratec.com", "turma05@gmail.com"))
+		.contact(new Contact("EcommerceManeirão","www.ecommerce.serratec.com.br", "turma05@gmail.com"))
 		.build();
 		return apiInfo;
 		}
