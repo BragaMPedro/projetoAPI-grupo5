@@ -1,64 +1,87 @@
 package br.com.serratec.ecommerce.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Categoria;
+import br.com.serratec.ecommerce.exceptions.ResourceBadRequestException;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.CategoriaRepository;
+import br.com.serratec.ecommerce.utils.NullAwareBeanUtilsBean;
 
 @Service
-@Transactional
 public class CategoriaService {
 
-	private final CategoriaRepository categoriarepository ;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
-	public CategoriaService(CategoriaRepository categoriarepository) {
-		this.categoriarepository = categoriarepository;
-	}
-	
-	public List<Categoria> listar_categorias(){
-		return categoriarepository.findAll();
-	}
-	
-	public void criar_categoria(Categoria categoria) {
-		categoriarepository.save(categoria);
-	}
-	
-	public Categoria leia_categoria(String nome_categoria) {
-		return categoriarepository.findByNome_categoria(nome_categoria);
-	}
-	
-	public Optional<Categoria> leia_categoria(Integer id_categoria) {
-		return categoriarepository.findById(id_categoria);
-	}
-		
-	
-	public void atualizar_categoria(Integer id_categoria, Categoria nova_categoria) {
-		Categoria categoria = categoriarepository.findById(id_categoria).get();
-		categoria.setNome_categoria(nova_categoria.getNome_categoria());
-		categoria.setDescricao(nova_categoria.getDescricao());
-		//categoria.setProdutos(nova_categoria.getProdutos());
-		
-		categoriarepository.save(categoria);
-	}
-	
-	public Optional<Categoria> obterPorId(Integer id_categoria) {
-		
-		Optional<Categoria> optCategoria = categoriarepository.findById(id_categoria);
-		
-		if(optCategoria.isEmpty()) {
-			throw new ResourceNotFoundException("Não foi possivel encontrar a categoria com id " + id_categoria);
+    @Autowired
+	private NullAwareBeanUtilsBean beanUtilsBean;
+
+    public List<Categoria> obterTodos() {
+       
+        List<Categoria> lista = categoriaRepository.findAll();
+		return lista;
+    }
+
+    public Optional<Categoria> obterById(Long id) {
+        var optCategoria = categoriaRepository.findById(id);
+
+		if(optCategoria.isEmpty()){
+			throw new ResourceNotFoundException("Não foi possível encontrar a Categoria id " + id);
 		}
+
 		return optCategoria;
-	}
-	
-	public void deletar_categoria(Integer id_categoria) {
-		obterPorId(id_categoria);
-		categoriarepository.deleteById(id_categoria);
-	}
+    }
+
+    public Categoria cadastrar(Categoria categoria) {
+
+        List<Categoria> lista = categoriaRepository.findAll();
+        
+        for (int i = 0; i < lista.size(); i++) {
+            if(categoria.getNome_categoria() == lista.get(i).getNome_categoria()){
+               throw new ResourceBadRequestException("Categoria já existente");
+            }
+        }
+    
+        return categoriaRepository.save(categoria);
+    }
+
+    public Categoria atualizar(Long id, Categoria categoria) {
+        
+        //validação rápida
+        obterById(id);
+       
+        //realiza o método em si
+		categoria.setId_categoria(id);
+		categoriaRepository.save(categoria);
+
+		return categoria;
+    }
+
+    public void deletar(Long id) {
+        
+        obterById(id);
+		categoriaRepository.deleteById(id);
+    }
+
+    public Categoria atualizarParcial(Long id, Categoria categoria)
+                throws IllegalAccessException, InvocationTargetException {
+       
+        //Objeto do banco de dados
+        var categoriaDB = obterById(id);
+        
+        //realiza método em si
+        beanUtilsBean.copyProperties(categoriaDB, categoria);
+
+		categoriaRepository.save(categoriaDB.get());
+		
+        //converte Entidade em DTO e retorna
+        return categoriaDB.get();
+    }
+    
 }
