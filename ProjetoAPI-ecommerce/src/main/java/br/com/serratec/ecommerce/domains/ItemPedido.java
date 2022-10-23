@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 
@@ -36,11 +37,11 @@ public class ItemPedido {
     @Column(name = "valor_liquido")
 	private double valor_liquido;
 
-    @ManyToOne
+    @OneToMany
 	@JoinColumn(name="id_pedido")
 	private Pedido pedido;
 
-    @OneToOne
+    @OneToMany
 	@JoinColumn(name="id_produto")
 	private Produto produto;
 
