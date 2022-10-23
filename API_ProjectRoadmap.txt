@@ -26,18 +26,18 @@ Marcelle > Categoria (Repository, Service, Controller, DTO, @Valid)
 
 Etapa 3 ------------------------
 
-Relacionamentos (@OneToMany, @ManyToOne)
+Relacionamentos Ok
 
 ItensPedido (Repository, Service, Controller, @Valid)
 
-Exceptions - (Classe Error, @ControllerAdvice)
+Exceptions - Ok
 
-MailSender - (Dependencia, Configs e Properties)
+MailSender - Ok
 
 
 Etapa 4 ------------------------
 
-Swagger
+Swagger - Ok
 
 Testes Insomnia/Postman
 
