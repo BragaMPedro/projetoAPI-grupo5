@@ -17,15 +17,15 @@ public class Categoria {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id_categoria;
+	private Long id_categoria;
 	
-	@Column(name = "id_categoria")
+	@Column(name = "nome_categoria", nullable = true)
 	private @NotBlank String nome_categoria;
 	
-	private @NotBlank String descricao;
+	private String descricao;
 	
-	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	Set<Produto> produtos;
+	// @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	// Set<Produto> produtos;
 	
 	public Categoria() {
 	}
@@ -35,11 +35,11 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public Integer getId_categoria() {
+	public Long getId_categoria() {
 		return id_categoria;
 	}
 
-	public void setId_categoria(Integer id_categoria) {
+	public void setId_categoria(Long id_categoria) {
 		this.id_categoria = id_categoria;
 	}
 
@@ -63,14 +63,6 @@ public class Categoria {
 	@Override
 	public String toString() {
 		return "Usuario {id categoria=" + id_categoria + ", nome categoria='" + nome_categoria + "', descricao='" + descricao + "'}";
-	}
-	
-	public Integer getId() {
-		return id_categoria;
-	}
-	
-	public void setId(Integer id_categoria) {
-		this.id_categoria = id_categoria;
 	}
 
 }

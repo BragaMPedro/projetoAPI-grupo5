@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import br.com.serratec.ecommerce.domains.Categoria;
 
 @Repository 
-public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
-	Categoria findByNome_categoria(String nome_categoria);
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+
 }
