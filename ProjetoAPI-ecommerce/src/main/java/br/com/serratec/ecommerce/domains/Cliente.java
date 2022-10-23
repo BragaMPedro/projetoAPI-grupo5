@@ -40,7 +40,7 @@ public class Cliente {
 	private String telefone;
 	
 	@Column(name = "data_nascimento")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
 	public Long getId_cliente() {
