@@ -23,6 +23,9 @@ import br.com.serratec.ecommerce.domains.ViaCep;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.services.EnderecoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/enderecos")
@@ -32,28 +35,40 @@ public class EnderecoController{
     private EnderecoService enderecoService;
 
     @GetMapping
+    @ApiOperation(value="Lista todos os endereços", notes="Listagem de endereços dos Clientes")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Retorna todos endereços"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<List<EnderecoResponseDTO>> getAll() {
        
         return ResponseEntity.ok(enderecoService.obterTodos());
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value="Retorna um endereço", notes="Retorna um endereço utilizando seu Id")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Retorna um endereço"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<EnderecoResponseDTO> getById(@PathVariable Long Id) {
        
         var enderecoDTO = enderecoService.obterById(Id);
         return ResponseEntity.ok(enderecoDTO.get());
     }
 
-    @GetMapping("/viacep")
-    public ViaCep getEnderecoByCep(@RequestBody String cep){
-
-        RestTemplate restTemplate = new RestTemplate();
-		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);
-
-        return viaCep;
-    }
-
     @PostMapping
+    @ApiOperation(value="Insere os dados de um Endereço", notes="Inserir endereço")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Endereço adicionado"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<EnderecoResponseDTO> post(@Valid @RequestBody EnderecoRequestDTO endereco) throws IllegalAccessException, InvocationTargetException {
 
        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
@@ -63,6 +78,13 @@ public class EnderecoController{
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value="Atualiza um Endereço por completo", notes="Atualizar endereço")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Endereço atualizado"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<EnderecoResponseDTO> put(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco) {
 
         ViaCep viaCep = getEnderecoByCep(endereco.getCep());
@@ -72,6 +94,13 @@ public class EnderecoController{
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value="Remove um endereço", notes="Remover Endereço")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Endereço Removido"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")	})
     public ResponseEntity<?> deletar(@PathVariable Long id) {
        
         enderecoService.deletar(id);
@@ -79,10 +108,25 @@ public class EnderecoController{
     }
 
     @PatchMapping("/{id}")
+    @ApiOperation(value="Atualiza dados de um Endereço", notes="Atualizar Endereço")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Dado(s) Atualizado(s)"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")	})
     public ResponseEntity<EnderecoResponseDTO> patch(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco)
             throws IllegalAccessException, InvocationTargetException {
        
         var enderecoDTO = enderecoService.atualizarParcial(id, endereco);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.PARTIAL_CONTENT);
+    }
+
+    public ViaCep getEnderecoByCep(@RequestBody String cep){
+
+        RestTemplate restTemplate = new RestTemplate();
+		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);
+
+        return viaCep;
     }
 }
