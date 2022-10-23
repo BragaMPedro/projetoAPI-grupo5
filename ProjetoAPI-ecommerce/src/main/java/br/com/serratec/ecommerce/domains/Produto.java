@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -40,8 +42,17 @@ public class Produto {
 		@Column(name="valor_unitario", nullable=false)
 		private Double valor_unitario;
 		
-//		@Column(name="imagem")
-//		private String imagem;
+		@Column(name="imagem", columnDefinition="NVARCHAR(MAX)")
+		private String imagem;
+		
+		@ManyToOne
+		@JoinColumn(name="id_categoria")
+		private Categoria categoria;
+		
+//		@ManyToOne
+//		@JoinColumn(name="id_item_pedido")
+//		private ItemPedido itemPedido;
+		
 
 		public Long getId_produto() {
 			return id_produto;
@@ -90,6 +101,21 @@ public class Produto {
 		public void setValor_unitario(Double valor_unitario) {
 			this.valor_unitario = valor_unitario;
 		}
-		
+
+		public String getImagem() {
+			return imagem;
+		}
+
+		public void setImagem(String imagem) {
+			this.imagem = imagem;
+		}
+
+		public Categoria getCategoria() {
+			return categoria;
+		}
+
+		public void setCategoria(Categoria categoria) {
+			this.categoria = categoria;
+		}
 		
 }
