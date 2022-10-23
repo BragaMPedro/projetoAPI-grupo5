@@ -1,13 +1,12 @@
 package br.com.serratec.ecommerce.domains;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 
@@ -38,25 +37,27 @@ public class ItemPedido {
     @Column(name = "valor_liquido")
 	private double valor_liquido;
 
-	@OneToMany(mappedBy = "itemPedido")
-	private List<Pedido> pedidos;
+	@ManyToOne
+    @JoinColumn(name= "id_pedido")
+	private Pedido pedido;
 
-    @OneToMany(mappedBy = "itemPedido")
-	private List<Produto> produto;
+    @ManyToOne
+    @JoinColumn(name= "id_produto")
+	private Produto produto;
 
-    public List<Pedido> getPedidos() {
-        return pedidos;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public List<Produto> getProduto() {
+    public Produto getProduto() {
         return produto;
     }
 
-    public void setProduto(List<Produto> produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
 

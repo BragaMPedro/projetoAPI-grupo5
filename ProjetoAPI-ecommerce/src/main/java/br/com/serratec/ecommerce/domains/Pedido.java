@@ -1,6 +1,7 @@
 package br.com.serratec.ecommerce.domains;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,18 +40,25 @@ public class Pedido {
 	private Boolean status;
 
 	@ManyToOne
-	@JoinColumn(name="id_itemPedido")
-	private ItemPedido itemPedido;
-
-	@ManyToOne
 	@JoinColumn(name= "id_cliente")
 	private Cliente cliente;
 
-	public ItemPedido getItemPedido() {
+	@OneToMany(mappedBy = "pedido")
+	private List<ItemPedido> itemPedido;
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public List<ItemPedido> getItemPedido() {
 		return itemPedido;
 	}
 
-	public void setItemPedido(ItemPedido itemPedido) {
+	public void setItemPedido(List<ItemPedido> itemPedido) {
 		this.itemPedido = itemPedido;
 	}
 
