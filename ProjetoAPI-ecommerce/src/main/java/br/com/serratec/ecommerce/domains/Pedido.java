@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,6 +36,18 @@ public class Pedido {
 	
 	@Column(name = "status", length = 5)
 	private Boolean status;
+
+	@ManyToOne
+	@JoinColumn(name="id_itemPedido")
+	private ItemPedido itemPedido;
+
+	public ItemPedido getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(ItemPedido itemPedido) {
+		this.itemPedido = itemPedido;
+	}
 
 	public Long getId_pedido() {
 		return id_pedido;

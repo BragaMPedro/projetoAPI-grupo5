@@ -49,10 +49,18 @@ public class Produto {
 		@JoinColumn(name="id_categoria")
 		private Categoria categoria;
 		
-//		@ManyToOne
-//		@JoinColumn(name="id_item_pedido")
-//		private ItemPedido itemPedido;
+		@ManyToOne
+		@JoinColumn(name="id_itemPedido")
+		private ItemPedido itemPedido;
 		
+
+		public ItemPedido getItemPedido() {
+			return itemPedido;
+		}
+
+		public void setItemPedido(ItemPedido itemPedido) {
+			this.itemPedido = itemPedido;
+		}
 
 		public Long getId_produto() {
 			return id_produto;
