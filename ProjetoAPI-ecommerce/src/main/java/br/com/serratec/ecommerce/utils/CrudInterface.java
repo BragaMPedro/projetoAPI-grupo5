@@ -1,5 +1,6 @@
 package br.com.serratec.ecommerce.utils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -31,5 +32,5 @@ public interface CrudInterface<T> {
 	public ResponseEntity<?> deletar(@PathVariable Long id);
 
     @PatchMapping("/{id}")
-	public ResponseEntity<T> patch(@PathVariable Long id, @Valid @RequestBody T objeto);  
+	public ResponseEntity<T> patch(@PathVariable Long id, @Valid @RequestBody T objeto) throws IllegalAccessException, InvocationTargetException;  
 }
