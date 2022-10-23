@@ -24,8 +24,8 @@ public class Categoria {
 	
 	private String descricao;
 	
-	// @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	// Set<Produto> produtos;
+	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	Set<Produto> produtos;
 	
 	public Categoria() {
 	}

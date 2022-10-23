@@ -41,6 +41,10 @@ public class Pedido {
 	@JoinColumn(name="id_itemPedido")
 	private ItemPedido itemPedido;
 
+	@ManyToOne
+	@JoinColumn(name= "id_cliente")
+	private Cliente cliente;
+
 	public ItemPedido getItemPedido() {
 		return itemPedido;
 	}

@@ -1,18 +1,20 @@
 package br.com.serratec.ecommerce.domains;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.br.CPF;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Cliente {
@@ -42,6 +44,13 @@ public class Cliente {
 	@Column(name = "data_nascimento")
 	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
+
+	@ManyToOne
+	@JoinColumn(name="id_endereco")
+	private Endereco endereco;
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos;
 
 	public Long getId_cliente() {
 		return id_cliente;
