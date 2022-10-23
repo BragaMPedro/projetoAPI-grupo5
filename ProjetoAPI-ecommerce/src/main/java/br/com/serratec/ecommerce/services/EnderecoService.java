@@ -13,6 +13,7 @@ import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.domains.ViaCep;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
+import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.EnderecoRepository;
 import br.com.serratec.ecommerce.utils.NullAwareBeanUtilsBean;
 
@@ -40,7 +41,7 @@ public class EnderecoService {
         var optEndereco = enderecoRepository.findById(id);
 
 		if(optEndereco.isEmpty()){
-	//		throw new ResourceNotFoundException("Não foi possível encontrar Endereço id " + id);
+			throw new ResourceNotFoundException("Não foi possível encontrar Endereço id " + id);
 		}
 
 		EnderecoResponseDTO dto = mapper.map(optEndereco.get(), EnderecoResponseDTO.class);

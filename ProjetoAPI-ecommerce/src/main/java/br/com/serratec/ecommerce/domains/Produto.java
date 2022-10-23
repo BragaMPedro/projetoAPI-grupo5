@@ -24,7 +24,7 @@ public class Produto {
 		@NotBlank(message = "Preencha o nome!")
 		private String nome;
 		
-		@Column(name="descricao", nullable=false, length=70)
+		@Column(name="descricao", nullable=false, length=70, unique = true)
 		private String descricao;
 		
 		@DecimalMin(value= "1")
