@@ -46,9 +46,9 @@ public class CategoriaController implements CrudInterface<Categoria>{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-    public ResponseEntity<Categoria> getById(Long Id) {
+    public ResponseEntity<Categoria> getById(Long id) {
         
-        var categoria = categoriaService.obterById(Id);
+        var categoria = categoriaService.obterById(id);
         return ResponseEntity.ok(categoria.get());
     }
 

@@ -20,7 +20,7 @@ public interface CrudInterface<T> {
 	public ResponseEntity<List<T>> getAll();
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<T> getById(@PathVariable Long Id);
+	public ResponseEntity<T> getById(@PathVariable Long id);
 	
 	@PostMapping
 	public ResponseEntity<T> post(@Valid @RequestBody T objeto);

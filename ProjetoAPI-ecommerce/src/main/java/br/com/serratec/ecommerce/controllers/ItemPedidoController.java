@@ -44,7 +44,7 @@ public class ItemPedidoController {
 		return ResponseEntity.ok(lista);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id_itemPedido}")
 	@ApiOperation(value="Retorna um itemPedido", notes="Retorna um itemPedido utilizando seu Id")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="Retorna um itemPedido"),
@@ -73,7 +73,7 @@ public class ItemPedidoController {
 		return new ResponseEntity<>(itemPedidoDTO, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{id_itemPedido}")
 	@ApiOperation(value="Atualiza um ItemPedido por completo", notes="Atualizar itemPedido")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="ItemPedido atualizado"),
@@ -87,7 +87,7 @@ public class ItemPedidoController {
 		return new ResponseEntity<>(itemPedidoDTO, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id_itemPedido}")
 	@ApiOperation(value="Remove um itemPedido", notes="Remover ItemPedido")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="ItemPedido Removido"),
