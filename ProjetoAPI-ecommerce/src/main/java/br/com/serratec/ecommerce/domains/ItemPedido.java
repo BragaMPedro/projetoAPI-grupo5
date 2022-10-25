@@ -35,7 +35,7 @@ public class ItemPedido {
 	private double valor_liquido;
 
 	@ManyToOne
-    @JoinColumn(name="id_pedido")
+    @JoinColumn(name = "id_pedido")
 	private Pedido pedido;
 
     @OneToOne(mappedBy = "itemPedido")

@@ -1,9 +1,13 @@
 package br.com.serratec.ecommerce.domains;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -42,8 +45,8 @@ public class Pedido {
 	@JoinColumn(name= "id_cliente")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy = "itemPedido")
-	private ItemPedido itemPedido;
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	Set<ItemPedido> itemPedido;
 	
 
 	public Cliente getCliente() {
@@ -93,13 +96,6 @@ public class Pedido {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-
-	public ItemPedido getItemPedido() {
-		return itemPedido;
-	}
-
-	public void setItemPedido(ItemPedido itemPedido) {
-		this.itemPedido = itemPedido;
-	}
 	
+
 }

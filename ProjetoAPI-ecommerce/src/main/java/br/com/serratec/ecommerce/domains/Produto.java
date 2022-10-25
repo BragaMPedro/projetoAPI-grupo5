@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -42,7 +43,7 @@ public class Produto {
 	    private LocalDate data_cadastro;
 		
 		@DecimalMin(value="10")
-		@NotBlank(message = "Preencha o valor!")
+		@NotNull(message = "Preencha o valor!")
 		@Column(name="valor_unitario", nullable=false)
 		private Double valor_unitario;
 		
