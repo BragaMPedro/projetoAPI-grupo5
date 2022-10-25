@@ -21,7 +21,7 @@ public class ClienteRequestDTO {
 	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
-	private List<EnderecoRequestDTO> enderecos = this.getEnderecos();
+	private List<EnderecoRequestDTO> enderecos;
 
 	public String getEmail() {
 		return email;

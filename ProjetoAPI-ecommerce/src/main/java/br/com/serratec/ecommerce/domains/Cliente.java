@@ -3,25 +3,32 @@ package br.com.serratec.ecommerce.domains;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @Entity
+@Table(name= "cliente")
 public class Cliente {
 	
-	@Column(name = "id_cliente")
 	@Id
+	@Column(name = "id_cliente")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_cliente;
 	
@@ -43,10 +50,11 @@ public class Cliente {
 	private String telefone;
 	
 	@Column(name = "data_nascimento")
+	@Past(message = "É um robô viajante do tempo você? Como é que nasceu no futuro?")
 	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Endereco> enderecos;
 
 	@OneToMany(mappedBy = "cliente")
@@ -100,11 +108,11 @@ public class Cliente {
 		this.data_nascimento = data_nascimento;
 	}
 
-	public List<Endereco> getEndereco() {
+	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEndereco(List<Endereco> enderecos) {
+	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
 
