@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -42,8 +42,7 @@ public class Pedido {
 	@JoinColumn(name= "id_cliente")
 	private Cliente cliente;
 
-	@OneToOne
-	@JoinColumn(name = "id_itemPedido")
+	@OneToMany(mappedBy = "itemPedido")
 	private ItemPedido itemPedido;
 	
 

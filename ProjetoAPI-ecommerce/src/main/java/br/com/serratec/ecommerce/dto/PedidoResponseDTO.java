@@ -1,6 +1,7 @@
 package br.com.serratec.ecommerce.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PedidoResponseDTO {
 
@@ -13,6 +14,16 @@ public class PedidoResponseDTO {
 	private LocalDate data_envio;
 	
 	private Boolean status;
+
+	private List<ItemPedidoResponseDTO> itemPedido;
+
+	public List<ItemPedidoResponseDTO> getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(List<ItemPedidoResponseDTO> itemPedido) {
+		this.itemPedido = itemPedido;
+	}
 
 	public Long getId_pedido() {
 		return id_pedido;
