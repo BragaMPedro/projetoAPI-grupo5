@@ -1,6 +1,7 @@
 package br.com.serratec.ecommerce.domains;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,8 +43,8 @@ public class Pedido {
 	@JoinColumn(name= "id_cliente")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy = "itemPedido")
-	private ItemPedido itemPedido;
+	@OneToMany(mappedBy = "pedido")
+	private List<ItemPedido> itemPedido;
 	
 
 	public Cliente getCliente() {
@@ -94,12 +95,15 @@ public class Pedido {
 		this.status = status;
 	}
 
-	public ItemPedido getItemPedido() {
+	public List<ItemPedido> getItemPedido() {
 		return itemPedido;
 	}
 
-	public void setItemPedido(ItemPedido itemPedido) {
+	public void setItemPedido(List<ItemPedido> itemPedido) {
 		this.itemPedido = itemPedido;
 	}
+
+	
+
 	
 }
