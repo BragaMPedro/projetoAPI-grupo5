@@ -8,8 +8,6 @@ public class CategoriaRequestDTO {
 	
 	private String descricao;
 	
-	private List<ProdutoRequestDTO> produtos;
-	
 	public String getNome_categoria() {
 		return nome_categoria;
 	}
@@ -22,10 +20,5 @@ public class CategoriaRequestDTO {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public List<ProdutoRequestDTO> getProdutos() {
-		return produtos;
-	}
-	public void setProdutos(List<ProdutoRequestDTO> produtos) {
-		this.produtos = produtos;
-	}
+	
 }

@@ -1,14 +1,12 @@
 package br.com.serratec.ecommerce.domains;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -26,10 +24,6 @@ public class ItemPedido {
 	@NotBlank(message = "Informe a quantidade do item! ")
 	private int quantidade;
 	
-	@Column(name = "preco_venda")
-    @NotBlank(message = "Informe o preço por unidade! ")
-	private double preco_venda;
-	
 	@Column(name = "percentual_desconto")
 	private double percentual_desconto;
 	
@@ -40,27 +34,28 @@ public class ItemPedido {
     @Column(name = "valor_liquido")
 	private double valor_liquido;
 
-	@OneToOne
-    @JoinColumn(name= "id_pedido")
+	@ManyToOne
+    @JoinColumn(name="id_pedido")
 	private Pedido pedido;
 
-    @OneToMany(mappedBy = "itemPedido")
-	private List<Produto> produtos;
+    @OneToOne(mappedBy = "itemPedido")
+	private Produto produtos;
 
+    
     public Pedido getPedido() {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public List<Produto> getProdutos() {
+    public Produto getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
+    public void setProdutos(Produto produtos) {
         this.produtos = produtos;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public Long getId_itemPedido() {
@@ -77,14 +72,6 @@ public class ItemPedido {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
-    }
-
-    public double getPreco_venda() {
-        return preco_venda;
-    }
-
-    public void setPreco_venda(double preco_venda) {
-        this.preco_venda = preco_venda;
     }
 
     public double getPercentual_desconto() {
