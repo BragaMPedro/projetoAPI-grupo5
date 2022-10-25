@@ -1,6 +1,9 @@
 package br.com.serratec.ecommerce.dto;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import br.com.serratec.ecommerce.domains.Endereco;
 
 public class ClienteResponseDTO {
 	
@@ -15,6 +18,16 @@ public class ClienteResponseDTO {
 	private String telefone;
 	
 	private LocalDate data_nascimento;
+
+	private List<Endereco> enderecos;
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
 
 	public Long getId_cliente() {
 		return id_cliente;

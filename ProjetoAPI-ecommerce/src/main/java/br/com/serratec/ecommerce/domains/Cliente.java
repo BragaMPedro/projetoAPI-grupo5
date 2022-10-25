@@ -8,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @Entity
 public class Cliente {
@@ -41,12 +43,11 @@ public class Cliente {
 	private String telefone;
 	
 	@Column(name = "data_nascimento")
-	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
-	@OneToMany
-	@JoinColumn(name= "id_endereco")
-	private List<Endereco> endereco;
+	@OneToMany(mappedBy = "cliente")
+	private List<Endereco> enderecos;
 
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos;
@@ -100,11 +101,11 @@ public class Cliente {
 	}
 
 	public List<Endereco> getEndereco() {
-		return endereco;
+		return enderecos;
 	}
 
-	public void setEndereco(List<Endereco> endereco) {
-		this.endereco = endereco;
+	public void setEndereco(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	public List<Pedido> getPedidos() {

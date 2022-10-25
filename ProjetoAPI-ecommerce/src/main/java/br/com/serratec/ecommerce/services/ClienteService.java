@@ -4,26 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.serratec.ecommerce.controllers.EnderecoController;
 import br.com.serratec.ecommerce.domains.Cliente;
+import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.domains.MensagemEmail;
 import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
+import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ClienteRepository;
+import br.com.serratec.ecommerce.repositories.EnderecoRepository;
 
 @Service
 public class ClienteService {
 
     @Autowired
     private ClienteRepository repositorio;
+
+    @Autowired
+    private EnderecoController enderecoController;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
     
     @Autowired
     private MailService emailService;
     
     private ModelMapper mapper = new ModelMapper();
+
     
     public List<ClienteResponseDTO> obterTodos() {
     	List<Cliente> lista = repositorio.findAll();
@@ -50,20 +63,29 @@ public class ClienteService {
                  
     	var clienteModel = mapper.map(cliente, Cliente.class);
 
-		repositorio.save(clienteModel);
+        repositorio.save(clienteModel);
+
+        for(EnderecoRequestDTO enderecoDTO : cliente.getEnderecos()){
+            
+           enderecoController.post(enderecoDTO);
+           var enderecoModel = mapper.map(cliente, Endereco.class);
+          
+           enderecoModel.setCliente(clienteModel);
+        }
+
 		var response = mapper.map(clienteModel, ClienteResponseDTO.class);
 		
-		var destinatarios = new ArrayList<String>();
-        destinatarios.add("turma05serratec@gmail.com");
-        destinatarios.add("pedrobmagalhaes95@gmail.com");
+		// var destinatarios = new ArrayList<String>();
+        // destinatarios.add("turma05serratec@gmail.com");
+        // destinatarios.add("pedrobmagalhaes95@gmail.com");
 
-        MensagemEmail email = new MensagemEmail(
-            "Nova conta criada.",
-            "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
-            "turma05serratec@gmail.com",
-            destinatarios);
+        // MensagemEmail email = new MensagemEmail(
+        //     "Nova conta criada.",
+        //     "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
+        //     "turma05serratec@gmail.com",
+        //     destinatarios);
         
-        emailService.enviarEmail(email);
+        // emailService.enviarEmail(email);
         
         return response;
     }

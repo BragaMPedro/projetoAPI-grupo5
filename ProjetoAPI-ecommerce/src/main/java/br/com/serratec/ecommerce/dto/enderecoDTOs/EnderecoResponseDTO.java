@@ -1,5 +1,7 @@
 package br.com.serratec.ecommerce.dto.enderecoDTOs;
 
+import br.com.serratec.ecommerce.domains.Cliente;
+
 public class EnderecoResponseDTO {
     private Long id;
     private String cep;
@@ -9,7 +11,14 @@ public class EnderecoResponseDTO {
     private Integer numero;
     private String complemento;
     private String uf;
+    private Cliente cliente;
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
     public Long getId() {
         return id;
     }

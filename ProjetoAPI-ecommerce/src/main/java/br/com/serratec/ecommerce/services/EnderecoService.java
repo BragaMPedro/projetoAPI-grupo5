@@ -87,8 +87,7 @@ public class EnderecoService {
 		enderecoRepository.deleteById(id);
     }
 
-    public EnderecoResponseDTO atualizarParcial(Long id, EnderecoRequestDTO endereco)
-                throws IllegalAccessException, InvocationTargetException {
+    public EnderecoResponseDTO atualizarParcial(Long id, EnderecoRequestDTO endereco)   {
        
         //Objeto do banco de dados
         var enderecoDB = obterById(id);
@@ -98,7 +97,15 @@ public class EnderecoService {
 		var enderecoDBmodel = mapper.map(enderecoDB.get(), Endereco.class);
         
         //realiza método em si
-        beanUtilsBean.copyProperties(enderecoDBmodel, enderecoModel);
+        try {
+            beanUtilsBean.copyProperties(enderecoDBmodel, enderecoModel);
+        } catch (IllegalAccessException e) {
+            
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            
+            e.printStackTrace();
+        }
 
 		enderecoRepository.save(enderecoDBmodel);
 		

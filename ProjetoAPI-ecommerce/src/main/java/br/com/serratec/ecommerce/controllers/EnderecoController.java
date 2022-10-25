@@ -1,6 +1,5 @@
 package br.com.serratec.ecommerce.controllers;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -69,7 +68,7 @@ public class EnderecoController{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-    public ResponseEntity<EnderecoResponseDTO> post(@Valid @RequestBody EnderecoRequestDTO endereco) throws IllegalAccessException, InvocationTargetException {
+    public ResponseEntity<EnderecoResponseDTO> post(@Valid @RequestBody EnderecoRequestDTO endereco) {
 
        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
 
@@ -115,11 +114,10 @@ public class EnderecoController{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")	})
-    public ResponseEntity<EnderecoResponseDTO> patch(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco)
-            throws IllegalAccessException, InvocationTargetException {
+    public ResponseEntity<EnderecoResponseDTO> patch(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco)	{
        
         var enderecoDTO = enderecoService.atualizarParcial(id, endereco);
-		return new ResponseEntity<>(enderecoDTO, HttpStatus.PARTIAL_CONTENT);
+		return new ResponseEntity<>(enderecoDTO, HttpStatus.OK);
     }
 
     public ViaCep getEnderecoByCep(@RequestBody String cep){
