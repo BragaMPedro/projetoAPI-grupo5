@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -41,8 +42,8 @@ public class Produto {
 	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	    private LocalDate data_cadastro;
 		
-		@DecimalMin(value="10")
-		@NotBlank(message = "Preencha o valor!")
+		@DecimalMin(value="10.00", message = "QUe preço é esse amigo, tem ceerteza??")
+		@NotNull(message = "Preencha o valor!")
 		@Column(name="valor_unitario", nullable=false)
 		private Double valor_unitario;
 		
