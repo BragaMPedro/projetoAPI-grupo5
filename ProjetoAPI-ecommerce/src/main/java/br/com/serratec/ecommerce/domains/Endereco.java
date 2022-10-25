@@ -1,13 +1,12 @@
 package br.com.serratec.ecommerce.domains;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
@@ -49,8 +48,9 @@ public class Endereco {
     @Pattern(regexp = "[a-zA-Z]{2}$", message = "Campo espera 2 caracteres alfabéticos")
     private String uf;
 
-    @OneToMany(mappedBy = "endereco")
-    private List<Cliente> clientes;
+    @ManyToOne
+    @JoinColumn(name="id_cliente")
+    private Cliente cliente;
 
 
     public void viaCepEnderecoUniter(ViaCep viaCep){
@@ -67,6 +67,14 @@ public class Endereco {
         if(this.uf == null){
             this.uf = viaCep.getUf(); }
       }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public Long getId() {
         return id;

@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -45,9 +44,9 @@ public class Cliente {
 	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
-	@ManyToOne
-	@JoinColumn(name="id_endereco")
-	private Endereco endereco;
+	@OneToMany
+	@JoinColumn(name= "id_endereco")
+	private List<Endereco> endereco;
 
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos;
@@ -100,8 +99,22 @@ public class Cliente {
 		this.data_nascimento = data_nascimento;
 	}
 
-	
-	
+	public List<Endereco> getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(List<Endereco> endereco) {
+		this.endereco = endereco;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 }
 
 
