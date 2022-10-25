@@ -1,14 +1,24 @@
 package br.com.serratec.ecommerce.dto;
 
+import br.com.serratec.ecommerce.domains.Produto;
+
 public class ItemPedidoRequestDTO {
     
+    private Produto ProdutoRequestDTO;
+
     private int quantidade;
 
-    private double preco_venda;
+    // private double preco_venda;
 
     private double percentual_desconto;
 
-    private double valor_liquido;
+    public Produto getProdutoRequestDTO() {
+        return ProdutoRequestDTO;
+    }
+
+    public void setProdutoRequestDTO(Produto produtoRequestDTO) {
+        ProdutoRequestDTO = produtoRequestDTO;
+    }
 
     public int getQuantidade() {
         return quantidade;
@@ -18,14 +28,6 @@ public class ItemPedidoRequestDTO {
         this.quantidade = quantidade;
     }
 
-    public double getPreco_venda() {
-        return preco_venda;
-    }
-
-    public void setPreco_venda(double preco_venda) {
-        this.preco_venda = preco_venda;
-    }
-
     public double getPercentual_desconto() {
         return percentual_desconto;
     }
@@ -33,13 +35,5 @@ public class ItemPedidoRequestDTO {
     public void setPercentual_desconto(double percentual_desconto) {
         this.percentual_desconto = percentual_desconto;
     }
-
-    public double getValor_liquido() {
-        return valor_liquido;
-    }
-
-    public void setValor_liquido(double valor_liquido) {
-        this.valor_liquido = valor_liquido;
-    }
-
+    
 }
