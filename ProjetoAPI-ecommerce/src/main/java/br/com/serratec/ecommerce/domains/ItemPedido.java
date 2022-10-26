@@ -1,5 +1,6 @@
 package br.com.serratec.ecommerce.domains;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class ItemPedido {
@@ -20,43 +23,26 @@ public class ItemPedido {
 	
 	@Column(name = "quantidade")
     @DecimalMin(value= "1")
-	@NotBlank(message = "Informe a quantidade do item! ")
+	@NotNull(message = "Informe a quantidade do item! ")
 	private int quantidade;
 	
 	@Column(name = "percentual_desconto")
-	private double percentual_desconto;
+	private double desconto;
 	
     @Column(name = "valor_bruto")
-	private double valor_bruto;
+	private double valorBruto;
     
-	
     @Column(name = "valor_liquido")
-	private double valor_liquido;
+	private double valorLiquido;
 
-	@ManyToOne
-    @JoinColumn(name = "id_pedido")
+	@ManyToOne(cascade= CascadeType.PERSIST)
+    @JoinColumn(name="id_pedido")
+    @JsonBackReference
 	private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "id_produto")
-	private Produto produtos;
-
-    
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public Produto getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(Produto produtos) {
-        this.produtos = produtos;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
+	private Produto produto;
 
     public Long getId_itemPedido() {
         return id_itemPedido;
@@ -74,28 +60,44 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 
-    public double getPercentual_desconto() {
-        return percentual_desconto;
+    public double getDesconto() {
+        return desconto;
     }
 
-    public void setPercentual_desconto(double percentual_desconto) {
-        this.percentual_desconto = percentual_desconto;
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
     }
 
-    public double getValor_bruto() {
-        return valor_bruto;
+    public double getValorBruto() {
+        return valorBruto;
     }
 
-    public void setValor_bruto(double valor_bruto) {
-        this.valor_bruto = valor_bruto;
+    public void setValorBruto(double valorBruto) {
+        this.valorBruto = valorBruto;
     }
 
-    public double getValor_liquido() {
-        return valor_liquido;
+    public double getValorLiquido() {
+        return valorLiquido;
     }
 
-    public void setValor_liquido(double valor_liquido) {
-        this.valor_liquido = valor_liquido;
+    public void setValorLiquido(double valorLiquido) {
+        this.valorLiquido = valorLiquido;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
 }

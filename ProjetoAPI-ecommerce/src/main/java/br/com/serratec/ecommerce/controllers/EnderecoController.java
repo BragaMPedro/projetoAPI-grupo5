@@ -72,8 +72,8 @@ public class EnderecoController{
 
        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
 
-        var contaDTO = enderecoService.cadastrar(endereco, viaCep);
-		return new ResponseEntity<>(contaDTO, HttpStatus.CREATED);
+        var enderecoDTO = enderecoService.cadastrar(endereco, viaCep);
+		return new ResponseEntity<>(enderecoDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -120,7 +120,7 @@ public class EnderecoController{
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.OK);
     }
 
-    public ViaCep getEnderecoByCep(@RequestBody String cep){
+    public ViaCep getEnderecoByCep(String cep){
 
         RestTemplate restTemplate = new RestTemplate();
 		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);

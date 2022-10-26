@@ -3,7 +3,7 @@ package br.com.serratec.ecommerce.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.serratec.ecommerce.domains.Endereco;
+import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 
 public class ClienteResponseDTO {
 	
@@ -19,13 +19,13 @@ public class ClienteResponseDTO {
 	
 	private LocalDate data_nascimento;
 
-	private List<Endereco> enderecos;
+	private List<EnderecoResponseDTO> enderecos;
 
-	public List<Endereco> getEnderecos() {
+	public List<EnderecoResponseDTO> getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(List<EnderecoResponseDTO> enderecos) {
 		this.enderecos = enderecos;
 	}
 

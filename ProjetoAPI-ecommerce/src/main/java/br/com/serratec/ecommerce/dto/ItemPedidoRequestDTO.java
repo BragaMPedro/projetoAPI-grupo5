@@ -2,9 +2,11 @@ package br.com.serratec.ecommerce.dto;
 
 public class ItemPedidoRequestDTO {
     
-    private Long id_produto;
+private Long id_produto;
 private int quantidade;
 private double desconto;
+
+
 public Long getId_produto() {
     return id_produto;
 }

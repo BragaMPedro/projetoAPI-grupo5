@@ -2,19 +2,18 @@ package br.com.serratec.ecommerce.domains;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -27,7 +26,7 @@ public class Pedido {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@Column(name = "data_pedido")
-	@NotBlank(message = "Informe a data do pedido! ")
+	@NotNull(message = "Informe a data do pedido! ")
 	private LocalDate data_pedido;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -45,8 +44,9 @@ public class Pedido {
 	@JoinColumn(name= "id_cliente")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	Set<ItemPedido> itemPedido;
+	@OneToMany(mappedBy = "pedido")
+	@JsonBackReference
+	private List<ItemPedido> itemPedido;
 	
 
 	public Cliente getCliente() {
@@ -96,6 +96,17 @@ public class Pedido {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
+
+	public List<ItemPedido> getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(List<ItemPedido> itemPedido) {
+		this.itemPedido = itemPedido;
+	}
+
+	
+
 	
 
 }

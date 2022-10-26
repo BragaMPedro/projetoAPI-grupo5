@@ -13,12 +13,15 @@ import br.com.serratec.ecommerce.dto.ItemPedidoRequestDTO;
 import br.com.serratec.ecommerce.dto.ItemPedidoResponseDTO;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ItemPedidoRepository;
+import br.com.serratec.ecommerce.repositories.ProdutoRepository;
 
 @Service
 public class ItemPedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository repositorio;
+	@Autowired
+	private ProdutoRepository produtoRepository;
 	
 	private ModelMapper mapper = new ModelMapper();
 	
@@ -47,6 +50,16 @@ public class ItemPedidoService {
 		
 		var itemPedidoModel = mapper.map(itemPedido, ItemPedido.class);
 
+		//pegando e settando Produto
+		var optProduto = itemPedido.getId_produto();
+		var produto = produtoRepository.findById(optProduto).get();
+		
+		itemPedidoModel.setProduto(produto);
+
+		//Calculando atributos
+		calcularValores(itemPedidoModel);
+
+		//salvando Banco de dados
 		repositorio.save(itemPedidoModel);
         
         var response = mapper.map(itemPedidoModel, ItemPedidoResponseDTO.class);
@@ -70,4 +83,13 @@ public class ItemPedidoService {
 		obterPorId(id);
 		repositorio.deleteById(id);
 	}
+
+	public void calcularValores (ItemPedido item){
+        var qtd = item.getQuantidade();
+        var desc = (item.getDesconto()/100);
+        var prodValor = item.getProduto().getValor_unitario();
+    
+        item.setValorBruto(prodValor*qtd);
+        item.setValorLiquido(item.getValorBruto() - (item.getValorBruto()*desc));
+    }
 }

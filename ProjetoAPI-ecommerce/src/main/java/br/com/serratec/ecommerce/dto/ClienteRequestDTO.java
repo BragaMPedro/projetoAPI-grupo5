@@ -1,12 +1,9 @@
 package br.com.serratec.ecommerce.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-
-import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 
 public class ClienteRequestDTO {
 
@@ -20,8 +17,6 @@ public class ClienteRequestDTO {
 	
 	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
-
-	private List<EnderecoRequestDTO> enderecos = this.getEnderecos();
 
 	public String getEmail() {
 		return email;
@@ -61,14 +56,6 @@ public class ClienteRequestDTO {
 
 	public void setData_nascimento(LocalDate data_nascimento) {
 		this.data_nascimento = data_nascimento;
-	}
-
-	public List<EnderecoRequestDTO> getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(List<EnderecoRequestDTO> enderecos) {
-		this.enderecos = enderecos;
 	}
 	
 	

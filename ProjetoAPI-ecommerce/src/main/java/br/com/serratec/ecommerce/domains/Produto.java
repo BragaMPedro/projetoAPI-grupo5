@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,9 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -36,14 +37,16 @@ public class Produto {
 		private String descricao;
 		
 		@DecimalMin(value= "1")
+		@NotNull
 		@Column(name="qtd_estoque")
 		private int qtd_estoque;
 		
 		@Column(name="data_cadastro")
+		@FutureOrPresent
 	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	    private LocalDate data_cadastro;
 		
-		@DecimalMin(value="10")
+		@DecimalMin(value="10.00", message = "Que preço é esse amigo, tem ceerteza??")
 		@NotNull(message = "Preencha o valor!")
 		@Column(name="valor_unitario", nullable=false)
 		private Double valor_unitario;
@@ -55,11 +58,20 @@ public class Produto {
 		@JoinColumn(name="id_categoria")
 		private Categoria categoria;
 		
-		@OneToMany(mappedBy = "produtos", fetch = FetchType.LAZY)
+		@OneToMany(mappedBy = "produto")
+		@JsonBackReference
 		private List<ItemPedido> itemPedido;
 
 		public Long getId_produto() {
 			return id_produto;
+		}
+
+		public List<ItemPedido> getItemPedido() {
+			return itemPedido;
+		}
+
+		public void setItemPedido(List<ItemPedido> itemPedido) {
+			this.itemPedido = itemPedido;
 		}
 
 		public void setId_produto(Long id_produto) {
@@ -120,14 +132,6 @@ public class Produto {
 
 		public void setCategoria(Categoria categoria) {
 			this.categoria = categoria;
-		}
-
-		public List<ItemPedido> getItemPedido() {
-			return itemPedido;
-		}
-
-		public void setItemPedido(List<ItemPedido> itemPedido) {
-			this.itemPedido = itemPedido;
 		}
 		
 }

@@ -1,5 +1,7 @@
 package br.com.serratec.ecommerce.dto.enderecoDTOs;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.serratec.ecommerce.domains.Cliente;
 
 public class EnderecoResponseDTO {
@@ -11,6 +13,7 @@ public class EnderecoResponseDTO {
     private Integer numero;
     private String complemento;
     private String uf;
+    @JsonBackReference
     private Cliente cliente;
 
     public Cliente getCliente() {
