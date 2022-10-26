@@ -51,6 +51,7 @@ public class Cliente {
 	private LocalDate data_nascimento;
 
 	@OneToMany(mappedBy = "cliente")
+	@JsonBackReference
 	private List<Endereco> enderecos;
 
 	@OneToMany(mappedBy = "cliente")

@@ -34,15 +34,15 @@ public class ItemPedido {
     
     @Column(name = "valor_liquido")
 	private double valorLiquido;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
 
 	@ManyToOne(cascade= CascadeType.PERSIST)
     @JoinColumn(name="id_pedido")
     @JsonBackReference
 	private Pedido pedido;
-
-    @ManyToOne
-    @JoinColumn(name = "id_produto")
-	private Produto produto;
 
     public Long getId_itemPedido() {
         return id_itemPedido;
