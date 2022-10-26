@@ -32,7 +32,7 @@ id_cliente BIGINT, FOREIGN KEY(id_cliente) REFERENCES cliente(id_cliente));
 
 CREATE TABLE produto (id_produto SERIAL PRIMARY KEY,
 nome varchar(40) NOT NULL,
-descricao varchar(70) NOT NULL UNIQUE,
+descricao varchar(150) NOT NULL UNIQUE,
 data_cadastro date,
 qtd_estoque integer NOT NULL,
 valor_unitario DOUBLE PRECISION NOT NULL,
