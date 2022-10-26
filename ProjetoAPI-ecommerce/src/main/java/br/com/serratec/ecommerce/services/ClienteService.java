@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Cliente;
 import br.com.serratec.ecommerce.domains.Endereco;
+import br.com.serratec.ecommerce.domains.MensagemEmail;
 import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
@@ -92,18 +93,21 @@ public class ClienteService {
         var response = mapper.map(clienteModel, ClienteResponseDTO.class);
         response.setEnderecos(enderecoResponseList);
 
-        // var destinatarios = new ArrayList<String>();
-        // destinatarios.add("turma05serratec@gmail.com");
-        // destinatarios.add("pedrobmagalhaes95@gmail.com");
-        // destinatarios.add(clienteModel.getEmail());
+        var destinatarios = new ArrayList<String>();
+        destinatarios.add("turma05serratec@gmail.com");
+        destinatarios.add("pedrobmagalhaes95@gmail.com");
+        destinatarios.add("isis.reis.castro@gmail.com");
+        //destinatarios.add(clienteModel.getEmail());
 
-        // MensagemEmail email = new MensagemEmail(
-        // "Nova conta criada.",
-        // "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
-        // "turma05serratec@gmail.com",
-        // destinatarios);
+        MensagemEmail email = new MensagemEmail(
+        "API ALERT - grupo 5",
+        "<h1 style=\"color:red\"> Atenção! Weberson está testando sua API. Acabou de fazer um POST de cliente! </h1>"+
+        "</br></br>"+
+        "<p> estamos de olho </p>",
+        "grupo5maneiro@gmail.com",
+        destinatarios);
 
-        // emailService.enviarEmail(email);
+        emailService.enviarEmail(email);
 
         return response;
     }
