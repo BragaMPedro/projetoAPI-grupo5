@@ -3,9 +3,6 @@ package br.com.serratec.ecommerce.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.serratec.ecommerce.domains.Cliente;
 
 public class PedidoResponseDTO {
@@ -20,12 +17,8 @@ public class PedidoResponseDTO {
 
 	private Boolean status;
 
-	@JsonIgnore
 	private Cliente cliente;
 
-	private Long id_cliente = cliente.getId_cliente();
-
-	@JsonBackReference
 	private List<ItemPedidoResponseDTO> itemPedido;
 
 	public Long getId_pedido() {
@@ -74,14 +67,6 @@ public class PedidoResponseDTO {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Long getId_cliente() {
-		return id_cliente;
-	}
-
-	public void setId_cliente(Long id_cliente) {
-		this.id_cliente = id_cliente;
 	}
 
 	public List<ItemPedidoResponseDTO> getItemPedido() {

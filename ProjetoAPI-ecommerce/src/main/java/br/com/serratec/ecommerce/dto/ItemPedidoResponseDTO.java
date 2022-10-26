@@ -1,52 +1,32 @@
 package br.com.serratec.ecommerce.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import br.com.serratec.ecommerce.domains.Pedido;
 import br.com.serratec.ecommerce.domains.Produto;
 
 public class ItemPedidoResponseDTO {
 
-    private Long id;
-    @JsonIgnore
+    private Long id_itemPedido;
     private Produto produto;
-    private Long id_produto = produto.getId_produto();
-    @JsonIgnore
+    @JsonBackReference
     private Pedido pedido;
-    private Long id_pedido = pedido.getId_pedido();
     private int quantidade;
     private double desconto;
     private double valorBruto;
     private double valorLiquido;
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+
     public Produto getProduto() {
         return produto;
     }
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
-    public Long getId_produto() {
-        return id_produto;
-    }
-    public void setId_produto(Long id_produto) {
-        this.id_produto = id_produto;
-    }
     public Pedido getPedido() {
         return pedido;
     }
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
-    }
-    public Long getId_pedido() {
-        return id_pedido;
-    }
-    public void setId_pedido(Long id_pedido) {
-        this.id_pedido = id_pedido;
     }
     public int getQuantidade() {
         return quantidade;
@@ -72,5 +52,10 @@ public class ItemPedidoResponseDTO {
     public void setValorLiquido(double valorLiquido) {
         this.valorLiquido = valorLiquido;
     }
-
+    public Long getId_itemPedido() {
+        return id_itemPedido;
+    }
+    public void setId_itemPedido(Long id_itemPedido) {
+        this.id_itemPedido = id_itemPedido;
+    }
 }

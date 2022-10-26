@@ -11,8 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -25,7 +26,7 @@ public class Pedido {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@Column(name = "data_pedido")
-	@NotBlank(message = "Informe a data do pedido! ")
+	@NotNull(message = "Informe a data do pedido! ")
 	private LocalDate data_pedido;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -44,6 +45,7 @@ public class Pedido {
 	private Cliente cliente;
 
 	@OneToMany(mappedBy = "pedido")
+	@JsonBackReference
 	private List<ItemPedido> itemPedido;
 	
 
