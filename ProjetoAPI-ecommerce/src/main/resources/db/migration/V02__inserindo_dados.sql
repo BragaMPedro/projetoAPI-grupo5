@@ -1,3 +1,5 @@
+-- Inserindo dados na tabela cliente
+
 INSERT INTO categoria(nome_categoria, descricao) VALUES('Mouses', 'mouses, mouses coloridos, mouses com 5 botões, mouses');
 INSERT INTO categoria(nome_categoria, descricao) VALUES('Teclados', 'teclas, tec-tec, teclas que brilham, teclas');
 
