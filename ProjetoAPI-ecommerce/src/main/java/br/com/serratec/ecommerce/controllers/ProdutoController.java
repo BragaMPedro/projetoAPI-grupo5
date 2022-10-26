@@ -46,7 +46,7 @@ public class ProdutoController {
 		return ResponseEntity.ok(lista);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id_produto}")
 	@ApiOperation(value="Retorna um produto", notes="Retorna um produto utilizando seu Id")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="Retorna um produto"),
@@ -75,7 +75,7 @@ public class ProdutoController {
 		return new ResponseEntity<>(produtoDTO, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{id_produto}")
 	@ApiOperation(value="Atualiza um Produto por completo", notes="Atualizar produto")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="Produto atualizado"),
@@ -83,13 +83,13 @@ public class ProdutoController {
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id_produto,@Valid @RequestBody ProdutoRequestDTO produto) {
+	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id_produto, @Valid @RequestBody ProdutoRequestDTO produto) {
 		
 		var produtoDTO = servico.atualizar(id_produto, produto);
 		return new ResponseEntity<>(produtoDTO, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id_produto}")
 	@ApiOperation(value="Remove um produto", notes="Remover Produto")
 	@ApiResponses(value= {
 	@ApiResponse(code=200, message="Produto Removido"),

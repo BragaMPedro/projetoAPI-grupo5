@@ -53,9 +53,9 @@ public class PedidoController{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-    public ResponseEntity<PedidoResponseDTO> getById(@PathVariable Long Id) {
+    public ResponseEntity<PedidoResponseDTO> getById(@PathVariable Long id) {
        
-        var pedidoDTO = pedidoService.obterById(Id);
+        var pedidoDTO = pedidoService.obterById(id);
         return ResponseEntity.ok(pedidoDTO.get());
     }
 
