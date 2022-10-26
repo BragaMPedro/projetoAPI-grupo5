@@ -3,10 +3,8 @@ package br.com.serratec.ecommerce.domains;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 public class Cliente {
 	
 	@Id
-	@Column(name = "id_cliente")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_cliente;
 	
@@ -53,8 +50,7 @@ public class Cliente {
 	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
-	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonBackReference
+	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos;
 
 	@OneToMany(mappedBy = "cliente")

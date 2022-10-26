@@ -3,7 +3,7 @@ package br.com.serratec.ecommerce.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 
@@ -21,7 +21,7 @@ public class ClienteResponseDTO {
 	
 	private LocalDate data_nascimento;
 	
-	@JsonManagedReference
+	@JsonBackReference
 	private List<EnderecoResponseDTO> enderecos;
 
 	public List<EnderecoResponseDTO> getEnderecos() {

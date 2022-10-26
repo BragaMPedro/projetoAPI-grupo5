@@ -15,6 +15,7 @@ import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
+import br.com.serratec.ecommerce.exceptions.ResourceBadRequestException;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ClienteRepository;
 
@@ -58,6 +59,10 @@ public class ClienteService {
 
         //Convertendo DTO em Entidade
         var clienteModel = mapper.map(cliente, Cliente.class);
+        
+        if(validarCpf(clienteModel) == false){
+            throw new ResourceBadRequestException("Já existe uma conta com esse CPF");
+        }
 
         //Array de EndereçosReponse para Settar pós-"for"
         List<EnderecoResponseDTO> enderecoResponseList= new ArrayList<EnderecoResponseDTO>();
@@ -76,7 +81,6 @@ public class ClienteService {
             var enderecoModel = mapper.map(enderecoResponse, Endereco.class);
             enderecoModel.setCliente(clienteModel);
 
-            //System.out.println(enderecoModel.getBairro()+"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
             clienteEnderecosList.add(enderecoModel);
         }
 
@@ -91,6 +95,7 @@ public class ClienteService {
         // var destinatarios = new ArrayList<String>();
         // destinatarios.add("turma05serratec@gmail.com");
         // destinatarios.add("pedrobmagalhaes95@gmail.com");
+        // destinatarios.add(clienteModel.getEmail());
 
         // MensagemEmail email = new MensagemEmail(
         // "Nova conta criada.",
@@ -118,6 +123,17 @@ public class ClienteService {
     public void deletar(Long id_cliente) {
         obterPorId(id_cliente);
         repositorio.deleteById(id_cliente);
+    }
+
+    private boolean validarCpf(Cliente cliente) {
+        var clientes = repositorio.findAll();
+        
+        for (Cliente clienteDB : clientes) {
+            if(cliente.getCpf() == clienteDB.getCpf()){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
