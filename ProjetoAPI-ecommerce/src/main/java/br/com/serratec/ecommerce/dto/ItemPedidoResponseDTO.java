@@ -2,30 +2,28 @@ package br.com.serratec.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import br.com.serratec.ecommerce.domains.Pedido;
-import br.com.serratec.ecommerce.domains.Produto;
-
 public class ItemPedidoResponseDTO {
 
     private Long id_itemPedido;
-    private Produto produto;
-    @JsonBackReference
-    private Pedido pedido;
     private int quantidade;
     private double desconto;
     private double valorBruto;
     private double valorLiquido;
+    private ProdutoResponseDTO produto;
 
-    public Produto getProduto() {
+    @JsonBackReference
+    private PedidoResponseDTO pedido;
+
+    public ProdutoResponseDTO getProduto() {
         return produto;
     }
-    public void setProduto(Produto produto) {
+    public void setProduto(ProdutoResponseDTO produto) {
         this.produto = produto;
     }
-    public Pedido getPedido() {
+    public PedidoResponseDTO getPedido() {
         return pedido;
     }
-    public void setPedido(Pedido pedido) {
+    public void setPedido(PedidoResponseDTO pedido) {
         this.pedido = pedido;
     }
     public int getQuantidade() {

@@ -2,7 +2,7 @@ package br.com.serratec.ecommerce.dto.enderecoDTOs;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import br.com.serratec.ecommerce.domains.Cliente;
+import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
 
 public class EnderecoResponseDTO {
     private Long id;
@@ -14,12 +14,12 @@ public class EnderecoResponseDTO {
     private String complemento;
     private String uf;
     @JsonBackReference
-    private Cliente cliente;
+    private ClienteResponseDTO cliente;
 
-    public Cliente getCliente() {
+    public ClienteResponseDTO getCliente() {
         return cliente;
     }
-    public void setCliente(Cliente cliente) {
+    public void setCliente(ClienteResponseDTO cliente) {
         this.cliente = cliente;
     }
     public Long getId() {
