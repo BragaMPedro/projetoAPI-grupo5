@@ -6,12 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.serratec.ecommerce.domains.ItemPedido;
 import br.com.serratec.ecommerce.domains.Pedido;
@@ -62,7 +59,7 @@ public class PedidoService {
 		return Optional.of(dto);
     }
 
-    public PedidoResponseDTO cadastrar(@Valid @RequestBody PedidoRequestDTO pedidoDTO) {
+    public PedidoResponseDTO cadastrar(PedidoRequestDTO pedidoDTO) {
 
         //Convertendo DTO em Entidade
         var pedidoModel = mapper.map(pedidoDTO, Pedido.class);
