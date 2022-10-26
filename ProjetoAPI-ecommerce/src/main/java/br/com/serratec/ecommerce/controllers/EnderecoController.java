@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import br.com.serratec.ecommerce.domains.ViaCep;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.services.EnderecoService;
@@ -70,9 +68,7 @@ public class EnderecoController{
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<EnderecoResponseDTO> post(@Valid @RequestBody EnderecoRequestDTO endereco) {
 
-       ViaCep viaCep = getEnderecoByCep(endereco.getCep());
-
-        var enderecoDTO = enderecoService.cadastrar(endereco, viaCep);
+        var enderecoDTO = enderecoService.cadastrar(endereco);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.CREATED);
     }
 
@@ -86,9 +82,7 @@ public class EnderecoController{
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
     public ResponseEntity<EnderecoResponseDTO> put(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco) {
 
-        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
-
-        var enderecoDTO = enderecoService.atualizar(id, endereco, viaCep);
+        var enderecoDTO = enderecoService.atualizar(id, endereco);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.CREATED);
     }
 
@@ -118,13 +112,5 @@ public class EnderecoController{
        
         var enderecoDTO = enderecoService.atualizarParcial(id, endereco);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.OK);
-    }
-
-    public ViaCep getEnderecoByCep(String cep){
-
-        RestTemplate restTemplate = new RestTemplate();
-		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);
-
-        return viaCep;
     }
 }

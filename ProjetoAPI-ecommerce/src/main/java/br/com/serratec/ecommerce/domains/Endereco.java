@@ -1,6 +1,5 @@
 package br.com.serratec.ecommerce.domains;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name= "endereco")
@@ -51,9 +48,8 @@ public class Endereco {
     @Pattern(regexp = "[a-zA-Z]{2}$", message = "Campo espera 2 caracteres alfabéticos")
     private String uf;
 
-    @ManyToOne(cascade= CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name="id_cliente")
-    @JsonBackReference
     private Cliente cliente;
 
     public void viaCepEnderecoUniter(ViaCep viaCep){

@@ -1,5 +1,6 @@
 package br.com.serratec.ecommerce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Cliente;
+import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
+import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
+import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ClienteRepository;
-import br.com.serratec.ecommerce.repositories.EnderecoRepository;
 
 @Service
 public class ClienteService {
@@ -22,8 +25,7 @@ public class ClienteService {
     private ClienteRepository repositorio;
 
     @Autowired
-    @SuppressWarnings("all")
-    private EnderecoRepository enderecoRepository;
+    private EnderecoService enderecoService;
 
     @Autowired
     @SuppressWarnings("all")
@@ -53,15 +55,53 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO cadastrar(ClienteRequestDTO cliente) {
-        
+
+        //Convertendo DTO em Entidade
         var clienteModel = mapper.map(cliente, Cliente.class);
-		repositorio.save(clienteModel);
-        
-        //converte Entidade para DTO
+
+        //Array de EndereçosReponse para Settar pós-"for"
+        List<EnderecoResponseDTO> enderecoResponseList= new ArrayList<EnderecoResponseDTO>();
+
+        //Array de Endereços para Settar endereço completo pós tratamento viaCep
+        List<Endereco> clienteEnderecosList = new ArrayList<Endereco>();
+
+
+        for (EnderecoRequestDTO enderecoDTO : cliente.getEnderecos()) {
+
+            //Cadastra Endereço e add na Lista enderecoRepsonse
+            var enderecoResponse = enderecoService.cadastrar(enderecoDTO);
+            enderecoResponseList.add(enderecoResponse);
+         
+            //Converte (DTO -> Entity) Endereço e setta Cliente
+            var enderecoModel = mapper.map(enderecoResponse, Endereco.class);
+            enderecoModel.setCliente(clienteModel);
+
+            //System.out.println(enderecoModel.getBairro()+"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+            clienteEnderecosList.add(enderecoModel);
+        }
+
+        //Setta endereços completos na Entidade
+        clienteModel.setEnderecos(clienteEnderecosList);
+        repositorio.save(clienteModel);
+
+        //Prepara Response e Setta endereços completos no DTO
         var response = mapper.map(clienteModel, ClienteResponseDTO.class);
+        response.setEnderecos(enderecoResponseList);
+
+        // var destinatarios = new ArrayList<String>();
+        // destinatarios.add("turma05serratec@gmail.com");
+        // destinatarios.add("pedrobmagalhaes95@gmail.com");
+
+        // MensagemEmail email = new MensagemEmail(
+        // "Nova conta criada.",
+        // "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
+        // "turma05serratec@gmail.com",
+        // destinatarios);
+
+        // emailService.enviarEmail(email);
 
         return response;
-    }    
+    }
 
     public ClienteResponseDTO atualizar(Long id_cliente, ClienteRequestDTO cliente) {
 
@@ -79,45 +119,5 @@ public class ClienteService {
         obterPorId(id_cliente);
         repositorio.deleteById(id_cliente);
     }
-
-    // public ClienteResponseDTO cadastrar(ClienteRequestDTO cliente) {
-
-    //     var clienteModel = mapper.map(cliente, Cliente.class);
-    //     var clienteEndList = clienteModel.getEnderecos();
-    //     List<EnderecoResponseDTO> enderecoResponse= new ArrayList<EnderecoResponseDTO>();
-
-    //     for (EnderecoRequestDTO enderecoDTO : cliente.getEnderecos()) {
-
-    //         ViaCep viaCep = enderecoController.getEnderecoByCep(enderecoDTO.getCep());
-         
-    //         var enderecoModel = mapper.map(enderecoDTO, Endereco.class);
-    //         enderecoModel.viaCepEnderecoUniter(viaCep);
-            
-    //         enderecoModel.setCliente(clienteModel);
-    //         enderecoRepository.save(enderecoModel);
-            
-    //         clienteEndList.add(enderecoModel);
-    //         enderecoResponse.add(mapper.map(enderecoModel, EnderecoResponseDTO.class));
-    //     }
-
-    //     repositorio.save(clienteModel);
-    //     var response = mapper.map(clienteModel, ClienteResponseDTO.class);
-
-    //     response.setEnderecos(enderecoResponse);
-
-    //     var destinatarios = new ArrayList<String>();
-    //     destinatarios.add("turma05serratec@gmail.com");
-    //     destinatarios.add("pedrobmagalhaes95@gmail.com");
-
-    //     MensagemEmail email = new MensagemEmail(
-    //     "Nova conta criada.",
-    //     "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
-    //     "turma05serratec@gmail.com",
-    //     destinatarios);
-
-    //     emailService.enviarEmail(email);
-
-    //     return response;
-    // }
 
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.domains.ViaCep;
@@ -49,8 +50,11 @@ public class EnderecoService {
 		return Optional.of(dto);
     }
 
-    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco, ViaCep viaCep) {
+    public EnderecoResponseDTO cadastrar(EnderecoRequestDTO endereco) {
         
+        //Traz endereço completo via ViaCep
+        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
+
         //converte DTO para Entidade
         var enderecoModel = mapper.map(endereco, Endereco.class);
 
@@ -64,11 +68,14 @@ public class EnderecoService {
         return response;
     }
 
-    public EnderecoResponseDTO atualizar(Long id, EnderecoRequestDTO endereco, ViaCep viaCep) {
+    public EnderecoResponseDTO atualizar(Long id, EnderecoRequestDTO endereco) {
         
         //validação rápida
         obterById(id);
       
+        //Traz endereço completo via ViaCep
+        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
+
         //converte DTO em Entidade
         var enderecoModel = mapper.map(endereco, Endereco.class);
        
@@ -113,4 +120,11 @@ public class EnderecoService {
         return mapper.map(enderecoDBmodel, EnderecoResponseDTO.class);
     }
 
+    public ViaCep getEnderecoByCep(String cep){
+
+        RestTemplate restTemplate = new RestTemplate();
+		ViaCep viaCep = restTemplate.getForObject("http://viacep.com.br/ws/"+ cep +"/json/", ViaCep.class);
+
+        return viaCep;
+    }
 }

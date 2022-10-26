@@ -32,16 +32,16 @@ public class Cliente {
 	private Long id_cliente;
 	
 	@Email
-	@NotBlank (message = "Preencha o e-mail:")
+	@NotBlank (message = "Preencha o e-mail")
 	@Column(name = "email", length = 50, unique = true)
 	private String email;
 	
-	@NotBlank (message = "Preencha o nome completo:")
+	@NotBlank (message = "Preencha o nome completo")
 	@Column(name = "nome_completo", length = 50)
 	private String nome_completo;
 	
 	@CPF
-	@NotBlank (message = "Preencha o CPF:")
+	@NotBlank (message = "Preencha o CPF")
 	@Column(name = "cpf", length = 11, unique = true)
 	private String cpf;
 	
