@@ -52,9 +52,9 @@ public class EnderecoController{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-    public ResponseEntity<EnderecoResponseDTO> getById(@PathVariable Long Id) {
+    public ResponseEntity<EnderecoResponseDTO> getById(@PathVariable Long id) {
        
-        var enderecoDTO = enderecoService.obterById(Id);
+        var enderecoDTO = enderecoService.obterById(id);
         return ResponseEntity.ok(enderecoDTO.get());
     }
 

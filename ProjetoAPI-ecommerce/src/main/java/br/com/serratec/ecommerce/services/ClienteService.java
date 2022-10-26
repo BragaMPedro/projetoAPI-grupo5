@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.Cliente;
 import br.com.serratec.ecommerce.domains.Endereco;
+import br.com.serratec.ecommerce.domains.MensagemEmail;
 import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
+import br.com.serratec.ecommerce.exceptions.ResourceBadRequestException;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ClienteRepository;
 
@@ -58,6 +60,10 @@ public class ClienteService {
 
         //Convertendo DTO em Entidade
         var clienteModel = mapper.map(cliente, Cliente.class);
+        
+        if(validarCpf(clienteModel) == false){
+            throw new ResourceBadRequestException("Já existe uma conta com esse CPF");
+        }
 
         //Array de EndereçosReponse para Settar pós-"for"
         List<EnderecoResponseDTO> enderecoResponseList= new ArrayList<EnderecoResponseDTO>();
@@ -76,7 +82,6 @@ public class ClienteService {
             var enderecoModel = mapper.map(enderecoResponse, Endereco.class);
             enderecoModel.setCliente(clienteModel);
 
-            //System.out.println(enderecoModel.getBairro()+"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
             clienteEnderecosList.add(enderecoModel);
         }
 
@@ -88,17 +93,21 @@ public class ClienteService {
         var response = mapper.map(clienteModel, ClienteResponseDTO.class);
         response.setEnderecos(enderecoResponseList);
 
-        // var destinatarios = new ArrayList<String>();
-        // destinatarios.add("turma05serratec@gmail.com");
-        // destinatarios.add("pedrobmagalhaes95@gmail.com");
+        var destinatarios = new ArrayList<String>();
+        destinatarios.add("turma05serratec@gmail.com");
+        destinatarios.add("pedrobmagalhaes95@gmail.com");
+        destinatarios.add("isis.reis.castro@gmail.com");
+        //destinatarios.add(clienteModel.getEmail());
 
-        // MensagemEmail email = new MensagemEmail(
-        // "Nova conta criada.",
-        // "<h1 style=\"color:red\"> Conta criada com Sucesso! </h1>",
-        // "turma05serratec@gmail.com",
-        // destinatarios);
+        MensagemEmail email = new MensagemEmail(
+        "API ALERT - grupo 5",
+        "<h1 style=\"color:red\"> Atenção! Weberson está testando sua API. Acabou de fazer um POST de cliente! </h1>"+
+        "</br></br>"+
+        "<p> estamos de olho </p>",
+        "grupo5maneiro@gmail.com",
+        destinatarios);
 
-        // emailService.enviarEmail(email);
+        emailService.enviarEmail(email);
 
         return response;
     }
@@ -118,6 +127,17 @@ public class ClienteService {
     public void deletar(Long id_cliente) {
         obterPorId(id_cliente);
         repositorio.deleteById(id_cliente);
+    }
+
+    private boolean validarCpf(Cliente cliente) {
+        var clientes = repositorio.findAll();
+        
+        for (Cliente clienteDB : clientes) {
+            if(cliente.getCpf() == clienteDB.getCpf()){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -3,8 +3,6 @@ package br.com.serratec.ecommerce.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.serratec.ecommerce.domains.Cliente;
-
 public class PedidoResponseDTO {
 
 	private Long id_pedido;
@@ -17,8 +15,8 @@ public class PedidoResponseDTO {
 
 	private Boolean status;
 
-	private Cliente cliente;
-
+	private ClienteResponseDTO cliente;
+	
 	private List<ItemPedidoResponseDTO> itemPedido;
 
 	public Long getId_pedido() {
@@ -61,20 +59,20 @@ public class PedidoResponseDTO {
 		this.status = status;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 	public List<ItemPedidoResponseDTO> getItemPedido() {
 		return itemPedido;
 	}
 
 	public void setItemPedido(List<ItemPedidoResponseDTO> itemPedido) {
 		this.itemPedido = itemPedido;
+	}
+
+	public ClienteResponseDTO getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(ClienteResponseDTO cliente) {
+		this.cliente = cliente;
 	}
 
 
