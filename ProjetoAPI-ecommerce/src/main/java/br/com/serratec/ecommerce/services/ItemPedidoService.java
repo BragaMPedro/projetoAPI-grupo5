@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.ecommerce.domains.ItemPedido;
+import br.com.serratec.ecommerce.domains.Produto;
 import br.com.serratec.ecommerce.dto.ItemPedidoRequestDTO;
 import br.com.serratec.ecommerce.dto.ItemPedidoResponseDTO;
+import br.com.serratec.ecommerce.exceptions.ResourceBadRequestException;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ItemPedidoRepository;
 import br.com.serratec.ecommerce.repositories.ProdutoRepository;
@@ -49,13 +51,17 @@ public class ItemPedidoService {
 	public ItemPedidoResponseDTO cadastrar(ItemPedidoRequestDTO itemPedido ) {
 		
 		var itemPedidoModel = mapper.map(itemPedido, ItemPedido.class);
-
+		
 		//pegando e settando Produto
 		var optProduto = itemPedido.getId_produto();
 		var produto = produtoRepository.findById(optProduto).get();
-		
-		itemPedidoModel.setProduto(produto);
 
+		if(validarQtd(itemPedidoModel, produto) == false){
+			throw new ResourceBadRequestException("Quantidade do pedido maior que estoque disponível!");
+		}
+
+		itemPedidoModel.setProduto(produto);
+		
 		//Calculando atributos
 		calcularValores(itemPedidoModel);
 
@@ -64,7 +70,8 @@ public class ItemPedidoService {
         
         var response = mapper.map(itemPedidoModel, ItemPedidoResponseDTO.class);
         return response;
-	}
+	
+}
 	
 	public ItemPedidoResponseDTO atualizar(Long id_itemPedido, ItemPedidoRequestDTO itemPedido) {
 		
@@ -92,4 +99,16 @@ public class ItemPedidoService {
         item.setValorBruto(prodValor*qtd);
         item.setValorLiquido(item.getValorBruto() - (item.getValorBruto()*desc));
     }
+	
+	public Boolean validarQtd (ItemPedido itemPedidoQtd, Produto produtoQtd){
+
+		if(itemPedidoQtd.getQuantidade() > produtoQtd.getQtd_estoque()){
+			return false;
+		}
+		else{
+			return true;
+		}
+
+	}
+
 }
