@@ -1,8 +1,10 @@
 package br.com.serratec.ecommerce.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,16 @@ import br.com.serratec.ecommerce.dto.ProdutoRequestDTO;
 import br.com.serratec.ecommerce.dto.ProdutoResponseDTO;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ProdutoRepository;
+import br.com.serratec.ecommerce.utils.NullAwareBeanUtilsBean;
 
 @Service
 public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository repositorio;
+
+	@Autowired
+	private NullAwareBeanUtilsBean beanUtilsBean;
 
 	private ModelMapper mapper = new ModelMapper();
 
@@ -69,4 +75,30 @@ public class ProdutoService {
 		obterPorId(id);
 		repositorio.deleteById(id);
 	}
+
+	public ProdutoResponseDTO atualizarParcial(Long id, ProdutoRequestDTO produto)   {
+       
+        //Objeto do banco de dados
+        var produtoDB = obterPorId(id);
+		
+		//Conversão do DTOrequest para Entidade
+		var produtoModel = mapper.map(produto, Produto.class);
+		var produtoDBmodel = mapper.map(produtoDB.get(), Produto.class);
+        
+        //realiza método em si
+        try {
+			beanUtilsBean.copyProperties(produtoDBmodel, produtoModel);
+        } catch (IllegalAccessException e) {
+			
+			e.printStackTrace();
+        } catch (InvocationTargetException e) {
+			
+			e.printStackTrace();
+        }
+
+		repositorio.save(produtoDBmodel);
+		
+        //converte Entidade em DTO e retorna
+        return mapper.map(produtoDBmodel, ProdutoResponseDTO.class);
+    }
 }

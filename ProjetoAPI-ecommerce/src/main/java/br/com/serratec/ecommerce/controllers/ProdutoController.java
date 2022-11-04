@@ -7,8 +7,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +27,8 @@ import io.swagger.annotations.ApiResponses;
 
 
 
-@RestController 
+@RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/produtos")
 public class ProdutoController {
 
@@ -100,5 +103,19 @@ public class ProdutoController {
 	public ResponseEntity<?> deletar(@PathVariable Long id_produto) {
 		servico.deletar(id_produto);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/{id_produto}")
+	@ApiOperation(value="Atualiza um Produto por completo", notes="Atualizar produto")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Produto atualizado"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
+	public ResponseEntity<ProdutoResponseDTO> atualizarParcial(@PathVariable Long id_produto, @Valid @RequestBody ProdutoRequestDTO produto) {
+		
+		var produtoDTO = servico.atualizarParcial(id_produto, produto);
+		return new ResponseEntity<>(produtoDTO, HttpStatus.CREATED);
 	}
 }

@@ -2,6 +2,8 @@ package br.com.serratec.ecommerce.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ProdutoRequestDTO {
 	
 
@@ -11,6 +13,7 @@ public class ProdutoRequestDTO {
 	
 	private int qtd_estoque;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate data_cadastro;
 	
 	private Double valor_unitario;
