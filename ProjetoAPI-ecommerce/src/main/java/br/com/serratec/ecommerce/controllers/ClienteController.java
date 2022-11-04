@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -102,6 +103,21 @@ public class ClienteController {
         servico.deletar(id_cliente);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    @PatchMapping("/{id_cliente}")
+    @ApiOperation(value="Atualiza um Cliente por completo", notes="Atualizar cliente")
+	@ApiResponses(value= {
+	@ApiResponse(code=200, message="Cliente atualizado"),
+	@ApiResponse(code=401, message="Erro de autenticação"),
+	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
+	@ApiResponse(code=404, message="Recurso não encontrado"),
+	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
+    public ResponseEntity<ClienteResponseDTO> atualizarParcial(@PathVariable Long id_cliente, @Valid @RequestBody ClienteRequestDTO cliente) {
+    	
+    	var clienteDTO = servico.atualizarParcial(id_cliente, cliente);
+        return new ResponseEntity<>(clienteDTO, HttpStatus.CREATED);
+        
     }
    
   }

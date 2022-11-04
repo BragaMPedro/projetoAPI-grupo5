@@ -13,12 +13,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
-
-import org.hibernate.validator.constraints.br.CPF;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @Entity
 @Table(name= "cliente")
@@ -37,7 +34,7 @@ public class Cliente {
 	@Column(name = "nome_completo", length = 50)
 	private String nome_completo;
 	
-	@CPF
+	@Pattern(regexp= "([0-9]{11})$")
 	@NotBlank (message = "Preencha o CPF")
 	@Column(name = "cpf", length = 11, unique = true)
 	private String cpf;
@@ -47,7 +44,6 @@ public class Cliente {
 	
 	@Column(name = "data_nascimento")
 	@Past(message = "É um robô viajante do tempo você? Como é que nasceu no futuro?")
-	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data_nascimento;
 
 	@OneToMany(mappedBy = "cliente")

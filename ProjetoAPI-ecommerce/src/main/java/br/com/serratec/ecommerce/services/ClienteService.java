@@ -1,5 +1,6 @@
 package br.com.serratec.ecommerce.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.exceptions.ResourceBadRequestException;
 import br.com.serratec.ecommerce.exceptions.ResourceNotFoundException;
 import br.com.serratec.ecommerce.repositories.ClienteRepository;
+import br.com.serratec.ecommerce.utils.NullAwareBeanUtilsBean;
 
 @Service
 public class ClienteService {
@@ -28,6 +30,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+	private NullAwareBeanUtilsBean beanUtilsBean;
 
     @Autowired
     @SuppressWarnings("all")
@@ -129,10 +134,37 @@ public class ClienteService {
         repositorio.deleteById(id_cliente);
     }
 
-    private boolean validarCpf(Cliente cliente) {
-        var clientes = repositorio.findAll();
+    public ClienteResponseDTO atualizarParcial(Long id, ClienteRequestDTO cliente)   {
+       
+        //Objeto do banco de dados
+        var clienteDB = obterPorId(id);
+
+         //Conversão do DTOrequest para Entidade
+		var clienteModel = mapper.map(cliente, Cliente.class);
+		var clienteDBmodel = mapper.map(clienteDB.get(), Cliente.class);
         
-        for (Cliente clienteDB : clientes) {
+        //realiza método em si
+        try {
+            beanUtilsBean.copyProperties(clienteDBmodel, clienteModel);
+        } catch (IllegalAccessException e) {
+            
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            
+            e.printStackTrace();
+        }
+
+        //clienteDBmodel.setCpf("11155566688");;
+		repositorio.save(clienteDBmodel);
+		
+        //converte Entidade em DTO e retorna
+        return mapper.map(clienteDBmodel, ClienteResponseDTO.class);
+    }
+
+    private boolean validarCpf(Cliente cliente) {
+        var clientesList = repositorio.findAll();
+        
+        for (Cliente clienteDB : clientesList) {
             if(cliente.getCpf() == clienteDB.getCpf()){
                 return false;
             }
