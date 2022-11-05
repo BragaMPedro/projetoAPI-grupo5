@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.serratec.ecommerce.domains.Cliente;
 import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.domains.ViaCep;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
@@ -60,6 +61,25 @@ public class EnderecoService {
 
         //método em si (jeito longo)
         enderecoModel.viaCepEnderecoUniter(viaCep);
+
+		enderecoRepository.save(enderecoModel);
+        
+        //converte Entidade para DTO
+        var response = mapper.map(enderecoModel, EnderecoResponseDTO.class);
+        return response;
+    }
+
+    public EnderecoResponseDTO cadastrarComCliente(Cliente cliente, EnderecoRequestDTO endereco) {
+        
+        //Traz endereço completo via ViaCep
+        ViaCep viaCep = getEnderecoByCep(endereco.getCep());
+
+        //converte DTO para Entidade
+        var enderecoModel = mapper.map(endereco, Endereco.class);
+
+        //método em si (jeito longo)
+        enderecoModel.viaCepEnderecoUniter(viaCep);
+        enderecoModel.setCliente(cliente);
 
 		enderecoRepository.save(enderecoModel);
         

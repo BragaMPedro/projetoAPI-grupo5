@@ -80,12 +80,11 @@ public class ClienteService {
         for (EnderecoRequestDTO enderecoDTO : cliente.getEnderecos()) {
 
             //Cadastra Endereço e add na Lista enderecoRepsonse
-            var enderecoResponse = enderecoService.cadastrar(enderecoDTO);
+            var enderecoResponse = enderecoService.cadastrarComCliente(clienteModel, enderecoDTO);
             enderecoResponseList.add(enderecoResponse);
          
             //Converte (DTO -> Entity) Endereço e setta Cliente
             var enderecoModel = mapper.map(enderecoResponse, Endereco.class);
-            enderecoModel.setCliente(clienteModel);
 
             clienteEnderecosList.add(enderecoModel);
         }
@@ -98,21 +97,21 @@ public class ClienteService {
         var response = mapper.map(clienteModel, ClienteResponseDTO.class);
         response.setEnderecos(enderecoResponseList);
 
-        var destinatarios = new ArrayList<String>();
-        destinatarios.add("turma05serratec@gmail.com");
-        destinatarios.add("pedrobmagalhaes95@gmail.com");
-        destinatarios.add("isis.reis.castro@gmail.com");
-        //destinatarios.add(clienteModel.getEmail());
+        // var destinatarios = new ArrayList<String>();
+        // destinatarios.add("turma05serratec@gmail.com");
+        // destinatarios.add("pedrobmagalhaes95@gmail.com");
+        // destinatarios.add("isis.reis.castro@gmail.com");
+        // //destinatarios.add(clienteModel.getEmail());
 
-        MensagemEmail email = new MensagemEmail(
-        "API ALERT - grupo 5",
-        "<h1 style=\"color:red\"> Atenção! Weberson está testando sua API. Acabou de fazer um POST de cliente! </h1>"+
-        "</br></br>"+
-        "<p> estamos de olho </p>",
-        "grupo5maneiro@gmail.com",
-        destinatarios);
+        // MensagemEmail email = new MensagemEmail(
+        // "API ALERT - grupo 5",
+        // "<h1 style=\"color:red\"> Atenção! Weberson está testando sua API. Acabou de fazer um POST de cliente! </h1>"+
+        // "</br></br>"+
+        // "<p> estamos de olho </p>",
+        // "grupo5maneiro@gmail.com",
+        // destinatarios);
 
-        emailService.enviarEmail(email);
+        // emailService.enviarEmail(email);
 
         return response;
     }

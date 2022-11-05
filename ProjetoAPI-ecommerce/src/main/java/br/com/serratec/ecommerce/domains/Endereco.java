@@ -1,5 +1,6 @@
 package br.com.serratec.ecommerce.domains;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class Endereco {
     @Pattern(regexp = "[a-zA-Z]{2}$", message = "Campo espera 2 caracteres alfabéticos")
     private String uf;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="id_cliente")
     private Cliente cliente;
 
