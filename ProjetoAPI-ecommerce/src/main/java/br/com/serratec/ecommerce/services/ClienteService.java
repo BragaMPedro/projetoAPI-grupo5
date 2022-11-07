@@ -133,18 +133,17 @@ public class ClienteService {
         repositorio.deleteById(id_cliente);
     }
 
-    public ClienteResponseDTO atualizarParcial(Long id, ClienteRequestDTO cliente)   {
+    public ClienteResponseDTO atualizarParcial(Long id, Cliente cliente)   {
        
         //Objeto do banco de dados
         var clienteDB = obterPorId(id);
 
          //Conversão do DTOrequest para Entidade
-		var clienteModel = mapper.map(cliente, Cliente.class);
 		var clienteDBmodel = mapper.map(clienteDB.get(), Cliente.class);
         
         //realiza método em si
         try {
-            beanUtilsBean.copyProperties(clienteDBmodel, clienteModel);
+            beanUtilsBean.copyProperties(clienteDBmodel, cliente);
         } catch (IllegalAccessException e) {
             
             e.printStackTrace();
@@ -153,7 +152,6 @@ public class ClienteService {
             e.printStackTrace();
         }
 
-        //clienteDBmodel.setCpf("11155566688");;
 		repositorio.save(clienteDBmodel);
 		
         //converte Entidade em DTO e retorna

@@ -114,18 +114,16 @@ public class EnderecoService {
 		enderecoRepository.deleteById(id);
     }
 
-    public EnderecoResponseDTO atualizarParcial(Long id, EnderecoRequestDTO endereco)   {
+    public EnderecoResponseDTO atualizarParcial(Long id, Endereco endereco)   {
        
         //Objeto do banco de dados
         var enderecoDB = obterById(id);
 
-         //Conversão do DTOrequest para Entidade
-		var enderecoModel = mapper.map(endereco, Endereco.class);
-		var enderecoDBmodel = mapper.map(enderecoDB.get(), Endereco.class);
+        var enderecoDBmodel = mapper.map(enderecoDB, Endereco.class);
         
         //realiza método em si
         try {
-            beanUtilsBean.copyProperties(enderecoDBmodel, enderecoModel);
+            beanUtilsBean.copyProperties(enderecoDBmodel, endereco);
         } catch (IllegalAccessException e) {
             
             e.printStackTrace();
