@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.serratec.ecommerce.domains.Endereco;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoRequestDTO;
 import br.com.serratec.ecommerce.dto.enderecoDTOs.EnderecoResponseDTO;
 import br.com.serratec.ecommerce.services.EnderecoService;
@@ -110,7 +111,7 @@ public class EnderecoController{
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")	})
-    public ResponseEntity<EnderecoResponseDTO> patch(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO endereco)	{
+    public ResponseEntity<EnderecoResponseDTO> patch(@PathVariable Long id, @Valid @RequestBody Endereco endereco)	{
        
         var enderecoDTO = enderecoService.atualizarParcial(id, endereco);
 		return new ResponseEntity<>(enderecoDTO, HttpStatus.OK);

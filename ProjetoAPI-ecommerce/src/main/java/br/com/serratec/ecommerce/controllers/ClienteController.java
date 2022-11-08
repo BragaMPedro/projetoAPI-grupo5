@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.serratec.ecommerce.domains.Cliente;
 import br.com.serratec.ecommerce.dto.ClienteRequestDTO;
 import br.com.serratec.ecommerce.dto.ClienteResponseDTO;
 import br.com.serratec.ecommerce.services.ClienteService;
@@ -115,7 +116,7 @@ public class ClienteController {
 	@ApiResponse(code=403, message="Não há permissão para acessar o recurso"),
 	@ApiResponse(code=404, message="Recurso não encontrado"),
 	@ApiResponse(code=505, message="Exceção interna da aplicação")  })
-    public ResponseEntity<ClienteResponseDTO> atualizarParcial(@PathVariable Long id_cliente, @Valid @RequestBody ClienteRequestDTO cliente) {
+    public ResponseEntity<ClienteResponseDTO> atualizarParcial(@PathVariable Long id_cliente, @Valid @RequestBody Cliente cliente) {
     	
     	var clienteDTO = servico.atualizarParcial(id_cliente, cliente);
         return new ResponseEntity<>(clienteDTO, HttpStatus.CREATED);
